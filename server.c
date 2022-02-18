@@ -15,22 +15,24 @@
 #define HTTP_QUIT 418
 #define PORT 35000
 #define MAX_EVENT 3
-#define SUCCESS 0
 
 #define handle_error(msg)   \
     do                      \
     {                       \
         perror(msg);        \
-        return EXIT_FAILURE; \
+        exit(EXIT_FAILURE); \
     } while (0)
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     int sfd, cfd, opt, epoll_fd, num_events, i;
 
     struct sockaddr_in my_addr;
     // struct epoll_event epollEvent;
     struct epoll_event epollEvents[MAX_EVENT];
     struct epoll_event ev;
+    FILE* file;
+    char buffer[100];
 
     /*Create Socket with socket() syscall*/
     sfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -123,6 +125,18 @@ int main(int argc, char *argv[]) {
                     handle_error("epoll_ctl");
                 }
                 printf("Client Connection Established, so Data is Ready!\n");
+                file = fdopen(cfd, "r");
+                if (file < 0)
+                {
+                    handle_error("starting file");
+                }
+
+                while (fscanf(file, "%s", buffer) != EOF)
+                {
+                    printf("%s\n", buffer);
+                }
+
+                fclose(file);
                 break;
             }
 
@@ -134,5 +148,4 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    return SUCCESS;
 }

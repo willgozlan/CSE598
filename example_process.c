@@ -30,12 +30,14 @@ void changePriority(int newPriority)
 
 long double hardComputation(int rounds)
 {
-    int i;
+    int i,j;
     long double accumulator = 1.1;
 
-    for(i = 0; i < rounds; ++i)
-    {
-        accumulator += accumulator; 
+    for(j = 0; j < rounds; ++j){
+        for(i = 0; i < rounds; ++i)
+        {
+            accumulator *= accumulator; 
+        }
     }
 
     return accumulator; 
@@ -47,9 +49,10 @@ int main(int argc, char *argv[])
    
     changePriority(20);
 
-    printf("Computation Result is %Lf\n", hardComputation(10000));
-
     printf("Priority is %d\n", getThisProcessPriority());
+
+    printf("Computation Result is %Lf\n", hardComputation(1000));
+
 
     return 0;
 }

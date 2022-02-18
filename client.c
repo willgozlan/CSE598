@@ -11,7 +11,6 @@
 #define MY_SOCK_PATH "/zpath"
 #define LISTEN_BACKLOG 50
 #define PORT 35000
-#define SUCCESS 0
 
 #define handle_error(msg)   \
     do                      \
@@ -25,12 +24,16 @@ int main(int argc, char *argv[])
     int sfd, cfd;
     char *msg;
     struct sockaddr_in my_addr;
-    char buffer[1024] = {0};
+    // char buffer[1024] = {0};
 
     msg = (char *)malloc(sizeof(int));
 
-    srand(time(NULL));                // Initialization for random
-    sprintf(msg, "%d", rand() % 100); // set msg to be random number
+    // srand(time(NULL));                // Initialization for random
+    // sprintf(msg, "%d", rand() % 100); // set msg to be random number
+
+    printf("Enter message to send:\n");
+    scanf("%s", msg);
+ 
 
     /* For command line option to specify path
        MY_SOCK_PATH =(char *)malloc(100);
@@ -61,10 +64,10 @@ int main(int argc, char *argv[])
     }
     printf("Message of %s Send!\n", msg);
 
-    read(sfd, buffer, 1024);
-    printf("Server sent back message: %s\n", buffer);
+    // read(sfd, buffer, 1024);
+    // printf("Server sent back message: %s\n", buffer);
 
     close(cfd);
     close(sfd);
-    return SUCCESS;
+    return 0;
 }
