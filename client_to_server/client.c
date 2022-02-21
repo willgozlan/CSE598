@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     struct sockaddr_in my_addr;
     // char buffer[1024] = {0};
 
-    msg = (char *)malloc(sizeof(int));
+    msg = (char *)malloc(sizeof(char));
 
     // srand(time(NULL));                // Initialization for random
     // sprintf(msg, "%d", rand() % 100); // set msg to be random number
@@ -57,6 +57,8 @@ int main(int argc, char *argv[])
     {
         handle_error("connect");
     }
+
+    printf("Sending message %s\n", msg);
 
     if (send(sfd, msg, strlen(msg), 0) < 0)
     {
