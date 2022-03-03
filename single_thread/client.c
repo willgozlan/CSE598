@@ -8,7 +8,8 @@
 #include <netinet/ip.h>
 #include <arpa/inet.h>
 #include <errno.h>
-
+#include <sys/resource.h>
+#include "dense_mm.h"
 
 #define MY_SOCK_PATH "/zpath"
 #define LISTEN_BACKLOG 50
@@ -23,9 +24,9 @@
 
 int main(int argc, char *argv[])
 {
-    int sfd, cfd, requested_priority;
+    int sfd, cfd, given_priority; // requested_priority, given_priority;
     struct sockaddr_in my_addr;
-    char requested_priority_string[2];
+    // char requested_priority_string[2];
     char buffer[5];
     // FILE* file;
 
@@ -33,16 +34,17 @@ int main(int argc, char *argv[])
 
     if(argc != 2)
     {
-        printf("Usage: %s <requested_priority_value>\n", argv[0]);
+        // printf("Usage: %s <requested_priority_value>\n", argv[0]);
+        printf("Usage: %s <workload_amount>\n", argv[0]);
         return -1;
     }
-
+/*  TODO: Use to request a priority
     errno = 0;
     requested_priority = strtol(argv[1], NULL, 10);
     if(errno != 0){
         handle_error("strtol");
     }
-    sprintf(requested_priority_string, "%d", requested_priority);
+    sprintf(requested_priority_string, "%d", requested_priority); */
 
 
     /*Create Socket with socket() syscall*/
@@ -63,32 +65,13 @@ int main(int argc, char *argv[])
         handle_error("connect");
     }
 
-    // printf("Sending message %s\n", msg);
-
+    /* TODO: Used to request a prioirty
     printf("Requesting Priority %s from server\n", requested_priority_string);
 
     if (send(sfd, requested_priority_string, strlen(requested_priority_string), 0) < 0)
     {
         handle_error("send");
-    }
-
-    // file = fdopen(sfd, "r");
-    // if (file < 0)
-    // {
-    //     handle_error("starting file");
-    // }
-
-    // while (fscanf(file, "%s", buffer) != EOF)
-    // {
-    //     printf("%s\n", buffer);
-    // }
-
-
-    // fclose(file);
-    // if(read(sfd, buffer, 2) < 0)
-    // {
-    //     handle_error("read");
-    // }
+    }*/
 
 
     if(recv(sfd, buffer, 5, 0) < 0)
@@ -96,19 +79,28 @@ int main(int argc, char *argv[])
         handle_error("recv");
     }
 
- 
-
-
-    printf("Server sent back message: %s\n", buffer);
-    // errno = 0;
-    // int recived_priority = strtol("87 buffer", NULL, 10);
-    // if(errno != 0){
-    //     handle_error("strtol");
-    // }
-    // printf("Server sent back message: %d\n", recived_priority);
-
-
     close(cfd);
     close(sfd);
+
+ 
+    errno = 0;
+    given_priority = strtol(buffer, NULL, 10);
+    if(errno != 0){
+        handle_error("strtol");
+    }
+
+    printf("Priority allowed is: %d\n", given_priority);
+
+    if (setpriority (PRIO_PGRP, 0, given_priority) == -1)
+    {
+        perror ("setpriority");
+    }
+
+    printf("Priority set to: %d\n", getpriority(PRIO_PROCESS, 0));
+
+    dense_mm(argv[1]);
+
+
+
     return 0;
 }

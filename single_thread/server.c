@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     struct epoll_event epollEvents[MAX_EVENT];
     struct epoll_event ev;
     // FILE* file;
-    char* buffer = "12 ";
+    char buffer[5] ;
 
     /*Create Socket with socket() syscall*/
     sfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -90,6 +90,9 @@ int main(int argc, char *argv[])
         handle_error("epoll_ctl");
     }
 
+    // Initialize RNG
+    srand(time(NULL));
+
     while (1)
     {
         num_events = epoll_wait(epoll_fd, epollEvents, MAX_EVENT, -1);
@@ -126,6 +129,7 @@ int main(int argc, char *argv[])
                 }
                 printf("Client Connection Established!\n");
 
+               /* TODO: Used to request prioirty from client 
                 // file = fdopen(cfd, "r");
                 // if (file < 0)
                 // {
@@ -139,13 +143,16 @@ int main(int argc, char *argv[])
                 // printf("Allowing client to have priority %s\n", buffer);
                 
                 // fflush(stdout);
+                */
+
+               sprintf(buffer, "%d", (rand() % 40) - 20);
 
                 if (send(cfd, buffer, strlen(buffer), 0) < 0)
                 {
                     handle_error("send");
                 }
 
-                printf("Client recieved prioirty value\n");
+                printf("Client got priority value %s\n", buffer);
 
                 // fclose(file);
                 break;
