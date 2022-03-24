@@ -17,7 +17,7 @@ int main(void)
    struct matrix_computation mc;
    int read_return_val;
 
-   double matrix_compute_result; 
+   pthread_t thread_id;
 
    /* create the FIFO with syscall */
    if(mkfifo(client_to_server_fifo, 0666) == ERROR)
@@ -68,15 +68,27 @@ int main(void)
 
       printf("Recieved matrix size %d and priority %d\n", mc.matrix_size, mc.priority);
       
-      matrix_compute_result = dense_mm(mc.matrix_size);
-      printf("matrix_compute_result is %lf ... sending result back to client\n", matrix_compute_result);
+      // dense_mm(mc.matrix_size, server_to_client);
 
+      struct pthread_create_args pthread_args;
+      pthread_args.matrix_size = mc.matrix_size;
+      pthread_args.server_to_client_id = server_to_client;
+      pthread_args.requested_priority = mc.priority;
 
-      if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == ERROR)
+      if(pthread_create(&thread_id, NULL, &dense_mm, &pthread_args))
       {
-         perror("write");
-         return BAD_WRITE;
+         perror("pthread_create");
+         return BAD_THREAD;
       }
+
+      printf("Thread launched \n");
+
+
+      // if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == ERROR)
+      // {
+      //    perror("write");
+      //    return BAD_WRITE;
+      // }
 
       /* clear out struct from any data */
       memset(&mc, 0, sizeof(mc));
