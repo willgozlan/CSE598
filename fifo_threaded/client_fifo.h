@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <stdlib.h> 
+#include <string.h> 
 
 
 #define EXPECTED_ARGUMENTS 3
@@ -26,13 +27,17 @@ enum {
     BAD_READ = 5,
     BAD_OPEN = 6,
     BAD_CLOSE = 7,
-    BAD_SPRINTF = 8
+    BAD_SPRINTF = 8,
+    BAD_FIFO = 9,
+    BAD_UNLINK = 10
+
 };
 
 struct matrix_computation
 {
    int matrix_size;
    int priority;
+   char server_to_client_path[BUF_SIZE];
 }matrix_computation;
 
 

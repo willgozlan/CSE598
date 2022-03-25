@@ -15,7 +15,7 @@ int main(void)
    char *client_to_server_fifo = "/tmp/client_to_server_fifo";
 
    int server_to_client;
-   char *server_to_client_fifo = "/tmp/server_to_client_fifo";
+   // char *server_to_client_fifo = "/tmp/server_to_client_fifo";
    
    struct matrix_computation mc;
    int read_return_val;
@@ -36,18 +36,13 @@ int main(void)
       perror("mkfifo");
       return BAD_FIFO;
    }
-   
-   if(mkfifo(server_to_client_fifo, 0666) == ERROR)
-   {
-      perror("mkfifo");
-      return BAD_FIFO;
-   }
+  
 
    /* open, read, and display the message from the FIFO */
    client_to_server = open(client_to_server_fifo, O_RDONLY);
-   server_to_client = open(server_to_client_fifo, O_WRONLY);
+   // server_to_client = open(server_to_client_fifo, O_WRONLY);
 
-   if(client_to_server == ERROR || server_to_client == ERROR)
+   if(client_to_server == ERROR)
    {
       perror("open");
       return BAD_OPEN;
@@ -78,18 +73,28 @@ int main(void)
          return BAD_READ;
       }
 
-      // If both values are zero, protocol to shutdown, for now 
-      if(mc.matrix_size == 0 && mc.priority == 0)
-      {
-         break;
-      }
+      // // If both values are zero, protocol to shutdown, for now 
+      // if(mc.matrix_size == 0 && mc.priority == 0)
+      // {
+      //    break;
+      // }
 
       printf("Recieved matrix size %d and priority %d\n", mc.matrix_size, mc.priority);
-      
+      printf("%s\n", mc.server_to_client_path);
+      server_to_client = open(mc.server_to_client_path, O_WRONLY);
+      if(server_to_client == ERROR)
+      {
+         perror("open");
+         printf("Cannot open client... skipping\n");
+         continue;
+      }
+
+
       struct pthread_create_args pthread_args;
       pthread_args.matrix_size = mc.matrix_size;
       pthread_args.server_to_client_id = server_to_client;
       pthread_args.requested_priority = mc.priority;
+
 
       if(pthread_create(&thread_id_matrix, NULL, &dense_mm, &pthread_args))
       {
@@ -120,7 +125,7 @@ int main(void)
       return BAD_CLOSE;
    }
 
-   if(unlink(client_to_server_fifo) == ERROR || unlink(server_to_client_fifo) == ERROR)
+   if(unlink(client_to_server_fifo) == ERROR)  // || unlink(server_to_client_fifo) == ERROR)
    {
       perror("unlink");
       return BAD_UNLINK;

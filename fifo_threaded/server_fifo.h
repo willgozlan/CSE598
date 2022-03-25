@@ -12,11 +12,13 @@
 #include "dense_mm.h"
 
 #define ERROR -1
+#define BUF_SIZE 100
 
 struct matrix_computation
 {
    int matrix_size;
    int priority;
+   char server_to_client_path[BUF_SIZE];
 }matrix_computation;
 
 

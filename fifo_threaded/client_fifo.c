@@ -42,34 +42,64 @@ int main(int argc, char *argv[])
    }
 
    // Get location of FIFO
-   if(sprintf(server_to_client_fifo, "/tmp/server_to_client_fifo_%d\n", get_pid()) < 0)
+   if(sprintf(server_to_client_fifo, "/tmp/server_to_client_fifo_%d", getpid()) < 0)
    {
       perror("sprintf");
       return BAD_SPRINTF;
+   }
+
+   printf("%s\n", server_to_client_fifo);
+    
+   if(mkfifo(server_to_client_fifo, 0666) == ERROR)
+   {
+      perror("mkfifo");
+      return BAD_FIFO;
    }
 
 
    struct matrix_computation mc;
    mc.matrix_size = requested_priority;
    mc.priority = requested_matrix_size;
+   // mc.server_to_client_path = server_to_client_fifo;
+   strncpy(mc.server_to_client_path, server_to_client_fifo, sizeof(mc.server_to_client_path));
 
+   printf("HELLO\n");
+
+
+   printf("%s\n", mc.server_to_client_path);
 
 
    /* write str to the FIFO */
    client_to_server = open(client_to_server_fifo, O_WRONLY);
-   server_to_client = open(server_to_client_fifo, O_RDONLY);
+      printf("HELLO2\n");
 
-   if(client_to_server == ERROR || server_to_client == ERROR)
+   if(client_to_server == ERROR)
    {
       perror("open");
       return BAD_OPEN;
    }
+
+   server_to_client = open(server_to_client_fifo, O_RDONLY | O_NONBLOCK );
+   printf("HELLO3\n");
+
+   if(server_to_client == ERROR)
+   {
+      perror("open");
+      return BAD_OPEN;
+   }
+
+   printf("before write\n");
 
    if(write(client_to_server, &mc, sizeof(struct matrix_computation)) == ERROR)
    {
       perror("write");
       return BAD_WRITE;
    }
+   printf("WRITTEN\n");
+
+
+   
+
 
    if(read(server_to_client, &computation_result, sizeof(computation_result)) == ERROR)
    {
@@ -79,11 +109,17 @@ int main(int argc, char *argv[])
 
    printf("Sever sent back result of %lf\n", computation_result); 
 
+   while(1);
 
    if(close(client_to_server) == ERROR || close(server_to_client) == ERROR)
    {
       perror("close");
       return BAD_CLOSE;
+   }
+   if(unlink(server_to_client_fifo) == ERROR)
+   {
+      perror("unlink");
+      return BAD_UNLINK;
    }
    
 
