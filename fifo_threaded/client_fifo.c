@@ -13,8 +13,9 @@ int main(int argc, char *argv[])
    char *client_to_server_fifo = "/tmp/client_to_server_fifo";
 
    int server_to_client;
-   char *server_to_client_fifo = "/tmp/server_to_client_fifo";
 
+   char server_to_client_fifo[BUF_SIZE];
+   
    int requested_priority, requested_matrix_size;
    double computation_result; 
 
@@ -24,7 +25,6 @@ int main(int argc, char *argv[])
       usage_message(argv[PROGRAM_NAME]);
       return BAD_ARGS;
    }
-
 
    errno = 0;
    requested_priority = strtol(argv[MATRIX_SIZE_INDEX], NULL, INTEGER_BASE);
@@ -40,6 +40,14 @@ int main(int argc, char *argv[])
       usage_message(argv[PROGRAM_NAME]);
       return BAD_PRIORITY;
    }
+
+   // Get location of FIFO
+   if(sprintf(server_to_client_fifo, "/tmp/server_to_client_fifo_%d\n", get_pid()) < 0)
+   {
+      perror("sprintf");
+      return BAD_SPRINTF;
+   }
+
 
    struct matrix_computation mc;
    mc.matrix_size = requested_priority;

@@ -15,6 +15,7 @@
 #define PRIOIRTY_INDEX 2
 #define INTEGER_BASE 10
 #define ERROR -1
+#define BUF_SIZE 100
 
 enum {
     SUCCESS = 0,
@@ -24,7 +25,8 @@ enum {
     BAD_WRITE = 4,
     BAD_READ = 5,
     BAD_OPEN = 6,
-    BAD_CLOSE = 7
+    BAD_CLOSE = 7,
+    BAD_SPRINTF = 8
 };
 
 struct matrix_computation

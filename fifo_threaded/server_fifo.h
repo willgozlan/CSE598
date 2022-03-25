@@ -5,6 +5,9 @@
 #include <unistd.h>
 #include <string.h>
 #include <pthread.h>
+#include <signal.h>
+#include <stdatomic.h>
+
 
 #include "dense_mm.h"
 
@@ -16,11 +19,6 @@ struct matrix_computation
    int priority;
 }matrix_computation;
 
-// struct pthread_create_args
-// {
-//    int matrix_size;
-//    int server_to_client_id;
-// }pthread_create_args;
 
 enum {
     SUCCESS = 0,
@@ -30,8 +28,12 @@ enum {
     BAD_UNLINK = 4,
     BAD_WRITE = 5,
     BAD_READ = 6,
-    BAD_THREAD = 7
+    BAD_THREAD = 7,
+    BAD_ALLOC = 8,
+    BAD_SIGNAL = 9
 };
 
 
-void shutdown(void);
+void shutdown(int signum);
+
+void* hold_fifo_open(void* client_to_server_fifo);
