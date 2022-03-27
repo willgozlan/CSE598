@@ -15,20 +15,19 @@ int main(void)
    char *client_to_server_fifo = "/tmp/client_to_server_fifo";
 
    int server_to_client;
-   // char *server_to_client_fifo = "/tmp/server_to_client_fifo";
    
    struct matrix_computation mc;
    int read_return_val;
 
    pthread_t thread_id_matrix, thread_id_fifo_open;
 
-   server_on = 1;
+   // Setup SIGNAL Handler for SIGINT, to cleanly exit
+   struct sigaction sa; 
+   sa.sa_handler = shutdown;
+   sigaction(SIGINT, &sa, NULL);
 
-   if(signal(SIGINT, shutdown) == SIG_ERR)
-   {
-      perror("signal");
-      return BAD_SIGNAL;
-   }
+   server_on = 1;
+   errno = 0;
 
    /* create the FIFO with syscall */
    if(mkfifo(client_to_server_fifo, 0666) == ERROR)
@@ -40,7 +39,16 @@ int main(void)
 
    /* open, read, and display the message from the FIFO */
    client_to_server = open(client_to_server_fifo, O_RDONLY);
-   // server_to_client = open(server_to_client_fifo, O_WRONLY);
+
+   if(errno == EINTR)
+   {
+      if(unlink(client_to_server_fifo) == ERROR) 
+      {
+         perror("unlink");
+         return BAD_UNLINK;
+      }
+      return SUCCESS; 
+   }
 
    if(client_to_server == ERROR)
    {
@@ -58,30 +66,26 @@ int main(void)
    while(server_on)
    {
 
+      errno = 0;
       read_return_val = read(client_to_server, &mc, sizeof(struct matrix_computation));
-      /*
-      * Put open of FIFO in seperate thread to open(fifo, WRONLY), then spin with while(1)
-      * atomic sigsafe global interger to give termination condition 
-      */
-      // if(read_return_val == 0)
-      // {
-      //    continue;
-      // }
+
+      if(errno == EINTR)
+      {
+         break;
+      }
       if(read_return_val == ERROR)
       {
          perror("read");
          return BAD_READ;
       }
 
-      // // If both values are zero, protocol to shutdown, for now 
-      // if(mc.matrix_size == 0 && mc.priority == 0)
-      // {
-      //    break;
-      // }
-
       printf("Recieved matrix size %d and priority %d\n", mc.matrix_size, mc.priority);
-      printf("%s\n", mc.server_to_client_path);
+
       server_to_client = open(mc.server_to_client_path, O_WRONLY);
+      if(errno == EINTR)
+      {
+         break;
+      }
       if(server_to_client == ERROR)
       {
          perror("open");
@@ -90,6 +94,7 @@ int main(void)
       }
 
 
+      // Spawn a thread to go off and do the work 
       struct pthread_create_args pthread_args;
       pthread_args.matrix_size = mc.matrix_size;
       pthread_args.server_to_client_id = server_to_client;
@@ -102,18 +107,11 @@ int main(void)
          return BAD_THREAD;
       }
 
-      printf("Thread launched \n");
-
-      // if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == ERROR)
-      // {
-      //    perror("write");
-      //    return BAD_WRITE;
-      // }
+      printf("Worker thread launched!\n");
 
       /* clear out struct from any data */
       memset(&mc, 0, sizeof(mc));
    }
-
 
    printf("Shutting down server\n");
 
@@ -125,7 +123,7 @@ int main(void)
       return BAD_CLOSE;
    }
 
-   if(unlink(client_to_server_fifo) == ERROR)  // || unlink(server_to_client_fifo) == ERROR)
+   if(unlink(client_to_server_fifo) == ERROR)
    {
       perror("unlink");
       return BAD_UNLINK;

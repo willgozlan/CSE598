@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include <signal.h>
 #include <stdatomic.h>
+#include <errno.h>
 
 
 #include "dense_mm.h"

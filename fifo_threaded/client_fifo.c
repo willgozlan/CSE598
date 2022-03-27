@@ -60,18 +60,10 @@ int main(int argc, char *argv[])
    struct matrix_computation mc;
    mc.matrix_size = requested_priority;
    mc.priority = requested_matrix_size;
-   // mc.server_to_client_path = server_to_client_fifo;
    strncpy(mc.server_to_client_path, server_to_client_fifo, sizeof(mc.server_to_client_path));
 
-   printf("HELLO\n");
 
-
-   printf("%s\n", mc.server_to_client_path);
-
-
-   /* write str to the FIFO */
    client_to_server = open(client_to_server_fifo, O_WRONLY);
-      printf("HELLO2\n");
 
    if(client_to_server == ERROR)
    {
@@ -79,26 +71,19 @@ int main(int argc, char *argv[])
       return BAD_OPEN;
    }
 
-   server_to_client = open(server_to_client_fifo, O_RDONLY | O_NONBLOCK );
-   printf("HELLO3\n");
+   if(write(client_to_server, &mc, sizeof(struct matrix_computation)) == ERROR)
+   {
+      perror("write");
+      return BAD_WRITE;
+   }
+
+   server_to_client = open(server_to_client_fifo, O_RDONLY);// | O_NONBLOCK );
 
    if(server_to_client == ERROR)
    {
       perror("open");
       return BAD_OPEN;
    }
-
-   printf("before write\n");
-
-   if(write(client_to_server, &mc, sizeof(struct matrix_computation)) == ERROR)
-   {
-      perror("write");
-      return BAD_WRITE;
-   }
-   printf("WRITTEN\n");
-
-
-   
 
 
    if(read(server_to_client, &computation_result, sizeof(computation_result)) == ERROR)
@@ -108,8 +93,6 @@ int main(int argc, char *argv[])
    }
 
    printf("Sever sent back result of %lf\n", computation_result); 
-
-   while(1);
 
    if(close(client_to_server) == ERROR || close(server_to_client) == ERROR)
    {
@@ -122,7 +105,6 @@ int main(int argc, char *argv[])
       return BAD_UNLINK;
    }
    
-
    return SUCCESS;
 }
 
