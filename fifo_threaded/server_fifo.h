@@ -9,7 +9,7 @@
 #include <stdatomic.h>
 #include <errno.h>
 
-
+#include "list.h"
 #include "dense_mm.h"
 
 #define ERROR -1

@@ -29,22 +29,33 @@ void* dense_mm(void* void_args)
    	double matrix_compute_result ; 
 
 	struct pthread_create_args* args = void_args;
-	int matrix_size;
-	int server_to_client;
+	int matrix_size = args->matrix_size;
+	int server_to_client = args->server_to_client_id;
 
 
     if (setpriority(PRIO_PGRP, 0, args->requested_priority) == -1)
     {
         perror("setpriority");
+		matrix_compute_result = 0.0;
+		if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)
+		{
+			perror("write");
+			return NULL;
+		}
 		return NULL;
     }
 	
-	matrix_size = args->matrix_size;
-	server_to_client = args->server_to_client_id;
+	
 
 
 	if(matrix_size > sqrt_of_UINT32_MAX ){
-		// printf("ERROR: Matrix size must be between zero and 65536!\n");
+		printf("ERROR: Matrix size must be between zero and 65536!\n");
+		matrix_compute_result = 0.0;
+		if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)
+		{
+			perror("write");
+			return NULL;
+		}
 		return NULL;
 	}
 
@@ -83,7 +94,7 @@ void* dense_mm(void* void_args)
 		perror("write");
 		return NULL;
 	}
-
+	
 
 	return NULL;
 

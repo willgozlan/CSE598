@@ -19,7 +19,7 @@ int main(void)
    struct matrix_computation mc;
    int read_return_val;
 
-   pthread_t thread_id_matrix, thread_id_fifo_open;
+   pthread_t thread_id_fifo_open;
 
    // Setup SIGNAL Handler for SIGINT, to cleanly exit
    struct sigaction sa; 
@@ -28,6 +28,8 @@ int main(void)
 
    server_on = 1;
    errno = 0;
+
+   List * list = make_list();
 
    /* create the FIFO with syscall */
    if(mkfifo(client_to_server_fifo, 0666) == ERROR)
@@ -42,6 +44,7 @@ int main(void)
 
    if(errno == EINTR)
    {
+      printf("Shutting down server\n");
       if(unlink(client_to_server_fifo) == ERROR) 
       {
          perror("unlink");
@@ -63,6 +66,8 @@ int main(void)
          return BAD_THREAD;
    }
 
+   list_add(thread_id_fifo_open, list);
+
    while(server_on)
    {
 
@@ -80,6 +85,8 @@ int main(void)
       }
 
       printf("Recieved matrix size %d and priority %d\n", mc.matrix_size, mc.priority);
+      
+      errno = 0;
 
       server_to_client = open(mc.server_to_client_path, O_WRONLY);
       if(errno == EINTR)
@@ -100,12 +107,16 @@ int main(void)
       pthread_args.server_to_client_id = server_to_client;
       pthread_args.requested_priority = mc.priority;
 
+      pthread_t thread_id_matrix;
 
       if(pthread_create(&thread_id_matrix, NULL, &dense_mm, &pthread_args))
       {
          perror("pthread_create");
          return BAD_THREAD;
       }
+      
+      list_add(thread_id_matrix, list);
+
 
       printf("Worker thread launched!\n");
 
@@ -115,7 +126,18 @@ int main(void)
 
    printf("Shutting down server\n");
 
-   // TODO: Join threads once while(NOT_DONE) isn't set. 
+
+   // Stop all threads by looping through list of them 
+   Node * current = list->head;
+   while(current != NULL)
+   {
+      if(pthread_cancel(current->data) == ERROR){
+         perror("pthread_cancel");
+      }
+      current = current->next;
+   }
+  
+   list_destroy(list);
 
    if(close(client_to_server) == ERROR || close(server_to_client) == ERROR)
    {

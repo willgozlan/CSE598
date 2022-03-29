@@ -21,7 +21,7 @@
 all:
 #	gcc -Wall -o server server.c
 #	gcc -Wall dense_mm.c -o client client.c
-	gcc -Wall -pthread -o server_fifo dense_mm.c server_fifo.c
+	gcc -Wall -pthread -o server_fifo list.c dense_mm.c server_fifo.c
 	gcc -Wall -o client_fifo client_fifo.c
 
 clean:

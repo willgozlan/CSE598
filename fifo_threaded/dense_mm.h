@@ -4,6 +4,8 @@
 #include <stdlib.h> 
 #include <unistd.h>
 #include <sys/resource.h>
+#include <pthread.h>
+
 
 struct pthread_create_args
 {
