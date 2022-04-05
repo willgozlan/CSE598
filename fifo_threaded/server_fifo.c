@@ -102,6 +102,40 @@ int main(void)
 
       printf("Recieved matrix size %d and priority %d\n", mc.matrix_size, mc.priority);
       
+      char* shm_loc = mc.shm_location;
+      // Shared Memory 
+      struct shared_mem_struct * shm_mapped;
+      printf("%s\n", shm_loc);
+      int shm_fd = shm_open(shm_loc , O_RDWR, S_IRWXU);
+      if(shm_fd == ERROR)
+      {
+         perror("shm_open");
+         return BAD_SHM_OPEN;
+      }
+      shm_mapped = (struct shared_mem_struct *) mmap(NULL, sizeof(struct shared_mem_struct), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+      if(shm_mapped == MAP_FAILED)
+      {
+         perror("mmap");
+         return BAD_MMAP;
+      }
+
+      printf("Shared Memory Values:\n");
+      for(int i = 0; i < SHARED_MEM_SIZE; ++i)
+      {
+         printf("%d\n", shm_mapped->data[i]);
+      }
+
+
+
+
+
+
+
+
+
+
+
+
       errno = 0;
 
       server_to_client = open(mc.server_to_client_path, O_WRONLY);

@@ -15,6 +15,8 @@ int main(int argc, char *argv[])
    int server_to_client;
 
    char server_to_client_fifo[BUF_SIZE];
+   char shm_location[BUF_SIZE];
+
    
    int requested_priority, requested_matrix_size;
    double computation_result; 
@@ -47,6 +49,11 @@ int main(int argc, char *argv[])
       perror("sprintf");
       return BAD_SPRINTF;
    }
+   if(sprintf(shm_location, "/shm_%d", getpid()) < 0)
+   {
+      perror("sprintf");
+      return BAD_SPRINTF;
+   }
 
    printf("%s\n", server_to_client_fifo);
     
@@ -57,11 +64,50 @@ int main(int argc, char *argv[])
    }
 
 
+   
+   struct shared_mem_struct * shm_mapped;
+
+   // SHARED MEMORY:
+  
+   int shm_fd = shm_open(shm_location , O_RDWR | O_CREAT, S_IRWXU);
+   if(shm_fd < 0)
+   {
+      perror("shm_open");
+      return BAD_SHM_OPEN;
+   }
+   if(ftruncate(shm_fd, sizeof(struct shared_mem_struct)) == -1)
+   {
+      perror("ftruncate");
+      return BAD_TRUNCATE;
+   }
+
+   shm_mapped = (struct shared_mem_struct *) mmap(NULL, sizeof(struct shared_mem_struct), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+   
+   if(shm_mapped == MAP_FAILED)
+   {
+      perror("mmap");
+      return BAD_MMAP;
+   }
+
+   shm_mapped->write_guard = 0;
+   shm_mapped->read_guard = 0;
+   shm_mapped->delete_guard = 0;
+
+   for(int i = 0; i < SHARED_MEM_SIZE; ++i)
+   {
+      shm_mapped->data[i] = i;
+   }
+
+
+
    struct matrix_computation mc;
    mc.matrix_size = requested_priority;
    mc.priority = requested_matrix_size;
+
+   strncpy(mc.shm_location, shm_location, sizeof(mc.shm_location));
    strncpy(mc.server_to_client_path, server_to_client_fifo, sizeof(mc.server_to_client_path));
 
+   printf("%s\n", mc.shm_location);
 
    client_to_server = open(client_to_server_fifo, O_WRONLY);
 

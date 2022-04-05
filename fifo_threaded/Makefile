@@ -19,8 +19,8 @@ TARGET = server_fifo client_fifo
 # 	$(RM) $(TARGET)
 
 all:
-	gcc -Wall -pthread -o server_fifo list.c dense_mm.c server_fifo.c
-	gcc -Wall -o client_fifo client_fifo.c
+	gcc -Wall -lrt -pthread -o server_fifo list.c dense_mm.c server_fifo.c
+	gcc -Wall -lrt -o client_fifo client_fifo.c
 
 clean:
 	rm server_fifo client_fifo

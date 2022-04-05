@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <stdlib.h> 
 #include <string.h> 
+#include <sys/mman.h>
 
 
 #define EXPECTED_ARGUMENTS 3
@@ -29,16 +30,31 @@ enum {
     BAD_CLOSE = 7,
     BAD_SPRINTF = 8,
     BAD_FIFO = 9,
-    BAD_UNLINK = 10
-
+    BAD_UNLINK = 10,
+    BAD_MMAP = 11,
+    BAD_TRUNCATE = 12,
+    BAD_SHM_OPEN = 13
 };
 
 struct matrix_computation
 {
-   int matrix_size;
-   int priority;
-   char server_to_client_path[BUF_SIZE];
+    int matrix_size;
+    int priority;
+    char server_to_client_path[BUF_SIZE];
+    char shm_location[BUF_SIZE];
 }matrix_computation;
 
-
 void usage_message();
+
+
+// SHARED MEMORY
+
+#define SHARED_MEM_SIZE 10
+#define SHARED_MEM "/share_mem"
+
+struct shared_mem_struct{
+    volatile int write_guard;
+    volatile int read_guard;
+    volatile int delete_guard;
+    volatile int data[SHARED_MEM_SIZE];
+};
