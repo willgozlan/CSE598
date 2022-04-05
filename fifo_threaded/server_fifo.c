@@ -7,8 +7,8 @@
 
 /*
 
-Notes(3/31): Mark Bober (EIT) (Or Support@EIT) To run on LinuxLab
-Change signal handler to Real Time Signal
+            Notes(3/31): Mark Bober (EIT) (Or Support@EIT) To run on LinuxLab
+            Change signal handler to Real Time Signal
 Shared Memory for Matrix Coefficents (POSIX Shared Memory)
    In Future: Permissions of the shared memory so no one has capability to access, until given
    Marion: CH. 54 LPI (Scoped Shared Memory) --> Step Farther (CH.48 LPI) System 5 shared memory 
@@ -35,8 +35,13 @@ int main(void)
 
    // Setup SIGNAL Handler for SIGINT, to cleanly exit
    struct sigaction sa; 
-   sa.sa_handler = shutdown;
-   sigaction(SIGINT, &sa, NULL);
+   memset (&sa, 0, sizeof(sa));  // Added this fixed not getting signal
+   sa.sa_sigaction = shutdown;
+   if(sigaction(SIGINT, &sa, NULL) < 0)
+   {
+      perror("sigaction");
+      return BAD_SIGACTION;
+   }
 
    errno = 0;
 
@@ -167,7 +172,7 @@ int main(void)
 
 
 
-void shutdown(int signum)
+void shutdown(int signum, siginfo_t *siginfo, void *context)
 {
    printf("SHUTDOWN signal received\n");
    server_on = 0;

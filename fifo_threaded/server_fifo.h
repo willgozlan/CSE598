@@ -33,10 +33,11 @@ enum {
     BAD_READ = 6,
     BAD_THREAD = 7,
     BAD_ALLOC = 8,
-    BAD_SIGNAL = 9
+    BAD_SIGNAL = 9,
+    BAD_SIGACTION = 10
 };
 
 
-void shutdown(int signum);
+void shutdown(int signum, siginfo_t *siginfo, void *context);
 
 void* hold_fifo_open(void* client_to_server_fifo);
