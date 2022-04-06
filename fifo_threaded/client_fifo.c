@@ -29,14 +29,14 @@ int main(int argc, char *argv[])
    }
 
    errno = 0;
-   requested_priority = strtol(argv[MATRIX_SIZE_INDEX], NULL, INTEGER_BASE);
+   requested_matrix_size = strtol(argv[MATRIX_SIZE_INDEX], NULL, INTEGER_BASE);
    if(errno != 0){
       printf("Bad command line agument. Expected integer\n");
       usage_message(argv[PROGRAM_NAME]);
       return BAD_MATRIX_SIZE;
    }
 
-   requested_matrix_size = strtol(argv[PRIOIRTY_INDEX], NULL, INTEGER_BASE);
+   requested_priority = strtol(argv[PRIOIRTY_INDEX], NULL, INTEGER_BASE);
    if(errno != 0){
       printf("Bad command line agument. Expected integer\n");
       usage_message(argv[PROGRAM_NAME]);
@@ -92,17 +92,27 @@ int main(int argc, char *argv[])
    shm_mapped->write_guard = 0;
    shm_mapped->read_guard = 0;
    shm_mapped->delete_guard = 0;
+   // shm_mapped->data = calloc(requested_matrix_size*requested_matrix_size, sizeof(int));
 
-   for(int i = 0; i < SHARED_MEM_SIZE; ++i)
+   // if(shm_mapped->data == NULL)
+   // {
+   //    perror("calloc");
+   //    return BAD_ALLOC;
+   // }
+
+   for(int i = 0; i < requested_matrix_size*requested_matrix_size; ++i)
    {
       shm_mapped->data[i] = i;
    }
 
-
+   for(int i = 0; i < requested_matrix_size*requested_matrix_size; ++i)
+   {
+      printf("%d\n",shm_mapped->data[i]);
+   }
 
    struct matrix_computation mc;
-   mc.matrix_size = requested_priority;
-   mc.priority = requested_matrix_size;
+   mc.matrix_size = requested_matrix_size; 
+   mc.priority = requested_priority;
 
    strncpy(mc.shm_location, shm_location, sizeof(mc.shm_location));
    strncpy(mc.server_to_client_path, server_to_client_fifo, sizeof(mc.server_to_client_path));

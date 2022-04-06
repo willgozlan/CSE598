@@ -44,7 +44,41 @@ void* dense_mm(void* void_args)
 		}
 		return NULL;
     }
-	
+	// Shared Memory
+	  char* shm_loc = args->shm_location;
+      // Shared Memory 
+      struct shared_mem_struct * shm_mapped;
+      printf("%s\n", shm_loc);
+      int shm_fd = shm_open(shm_loc , O_RDWR, S_IRWXU);
+      if(shm_fd == ERROR)
+      {
+         perror("shm_open");
+         return NULL;
+      }
+      shm_mapped = (struct shared_mem_struct *) mmap(NULL, sizeof(struct shared_mem_struct), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+      if(shm_mapped == MAP_FAILED)
+      {
+         perror("mmap");
+         return NULL;
+      }
+
+		printf("Matrix Size: %d\n", matrix_size);
+      printf("Shared Memory Values:\n");
+      for(int i = 0; i < matrix_size*matrix_size; ++i)
+      {
+         printf("%d\n", shm_mapped->data[i]);
+      }
+
+
+
+
+
+
+
+
+
+
+
 	
 
 

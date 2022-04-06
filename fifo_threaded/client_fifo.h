@@ -33,7 +33,8 @@ enum {
     BAD_UNLINK = 10,
     BAD_MMAP = 11,
     BAD_TRUNCATE = 12,
-    BAD_SHM_OPEN = 13
+    BAD_SHM_OPEN = 13,
+    BAD_ALLOC = 14
 };
 
 struct matrix_computation
@@ -49,7 +50,7 @@ void usage_message();
 
 // SHARED MEMORY
 
-#define SHARED_MEM_SIZE 10
+#define SHARED_MEM_SIZE 1000000
 #define SHARED_MEM "/share_mem"
 
 struct shared_mem_struct{
