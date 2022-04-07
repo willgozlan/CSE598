@@ -100,15 +100,26 @@ int main(int argc, char *argv[])
    //    return BAD_ALLOC;
    // }
 
-   for(int i = 0; i < requested_matrix_size*requested_matrix_size; ++i)
+   double value = 0.0;
+   for(int i = 0; i < requested_matrix_size; ++i)
    {
-      shm_mapped->data[i] = i;
-   }
+      for(int j = 0; j < requested_matrix_size; ++j)
+      {
+         shm_mapped->dataMatrixA[i][j] = value;
+         ++value;
+      }
+   }      
 
-   for(int i = 0; i < requested_matrix_size*requested_matrix_size; ++i)
+   value = 0.0;
+   for(int i = 0; i < requested_matrix_size; ++i)
    {
-      printf("%d\n",shm_mapped->data[i]);
-   }
+      for(int j = 0; j < requested_matrix_size; ++j)
+      {
+         shm_mapped->dataMatrixB[i][j] = value;
+         ++value;
+      }
+   }      
+
 
    struct matrix_computation mc;
    mc.matrix_size = requested_matrix_size; 
@@ -148,7 +159,16 @@ int main(int argc, char *argv[])
       return BAD_READ;
    }
 
-   printf("Sever sent back result of %lf\n", computation_result); 
+   printf("Sever sent computed matrix below:\n"); 
+
+   for(int i = 0; i < requested_matrix_size; ++i)
+   {
+      for(int j = 0; j < requested_matrix_size; ++j)
+      {
+         printf("%.2lf ", shm_mapped->dataMatrixA[i][j]);
+      }
+      printf("\n");
+   }      
 
    if(close(client_to_server) == ERROR || close(server_to_client) == ERROR)
    {

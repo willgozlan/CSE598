@@ -9,7 +9,7 @@
 
             Notes(3/31): Mark Bober (EIT) (Or Support@EIT) To run on LinuxLab
             Change signal handler to Real Time Signal
-Shared Memory for Matrix Coefficents (POSIX Shared Memory)
+            Shared Memory for Matrix Coefficents (POSIX Shared Memory)
    In Future: Permissions of the shared memory so no one has capability to access, until given
    Marion: CH. 54 LPI (Scoped Shared Memory) --> Step Farther (CH.48 LPI) System 5 shared memory 
                                                          Access Control Lists -> Closer to Capability Model

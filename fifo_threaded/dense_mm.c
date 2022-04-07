@@ -25,7 +25,7 @@ void* dense_mm(void* void_args)
 
 	unsigned index, row, col; //loop indicies
 	unsigned squared_size;
-	double *A, *B, *C;
+	double *C;
    	double matrix_compute_result ; 
 
 	struct pthread_create_args* args = void_args;
@@ -62,24 +62,18 @@ void* dense_mm(void* void_args)
          return NULL;
       }
 
-		printf("Matrix Size: %d\n", matrix_size);
-      printf("Shared Memory Values:\n");
-      for(int i = 0; i < matrix_size*matrix_size; ++i)
-      {
-         printf("%d\n", shm_mapped->data[i]);
-      }
+	// printf("Matrix Size: %d\n", matrix_size);
+    //   printf("Shared Memory Values:\n");
+    // for(int i = 0; i < matrix_size; ++i)
+   	// {
+    // 	for(int j = 0; j < matrix_size; ++j)
+    // 	{
+    //     	printf("%.2lf ", shm_mapped->dataMatrixA[i][j]);
+    // 	}
+	// 	printf("\n");
+   	// }      
 
 
-
-
-
-
-
-
-
-
-
-	
 
 
 	if(matrix_size > sqrt_of_UINT32_MAX ){
@@ -97,13 +91,11 @@ void* dense_mm(void* void_args)
 
 	printf("Generating matrices...\n");
 
-	A = (double*) malloc( sizeof(double) * squared_size );
-	B = (double*) malloc( sizeof(double) * squared_size );
+	// A = (double*) malloc( sizeof(double) * squared_size );
+	// B = (double*) malloc( sizeof(double) * squared_size );
 	C = (double*) malloc( sizeof(double) * squared_size );
 
 	for( index = 0; index < squared_size; index++ ){
-		A[index] = (double) rand();
-		B[index] = (double) rand();
 		C[index] = 0.0;
 	}
 
@@ -112,15 +104,37 @@ void* dense_mm(void* void_args)
 	for( row = 0; row < matrix_size; row++ ){
 		for( col = 0; col < matrix_size; col++ ){
 			for( index = 0; index < matrix_size; index++){
-			C[row*matrix_size + col] += A[row*matrix_size + index] *B[index*matrix_size + col];
+			C[row*matrix_size + col] += ((shm_mapped->dataMatrixA[row][index]) *(shm_mapped->dataMatrixB[index][col]));
 			}	
 		}
 	}
 
 	printf("Multiplication done!\n");
+
+	for(int row = 0; row < matrix_size; ++row)
+   	{
+    	for(int col = 0; col < matrix_size; ++col)
+    	{
+        	printf("%.2lf ", C[row*matrix_size + col]);
+    	}
+		printf("\n");
+   	}      
+
+
+	for(int row = 0; row < matrix_size; ++row)
+   	{
+    	for(int col = 0; col < matrix_size; ++col)
+    	{
+        	shm_mapped->dataMatrixA[row][col] = C[row*matrix_size + col];
+    	}
+   	}      
+
+	// for(index = 0; index < squared_size; index++ ){
+		
+	// }
 	matrix_compute_result = C[0];
 
-    printf("matrix_compute_result is %lf ... sending result back to client\n", matrix_compute_result);
+    printf("Wrote back values to client shared memory!\n");
 
 	// Send back result to client
 	if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)

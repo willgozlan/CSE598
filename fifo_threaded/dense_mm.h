@@ -22,14 +22,15 @@ struct pthread_create_args
 void* dense_mm(void* void_args);
 
 
-#define SHARED_MEM_SIZE 1000000
+#define SHARED_MEM_SIZE 1000
 #define SHARED_MEM "/share_mem"
 
 struct shared_mem_struct{
     volatile int write_guard;
     volatile int read_guard;
     volatile int delete_guard;
-    volatile int data[SHARED_MEM_SIZE];
+    volatile double dataMatrixA[SHARED_MEM_SIZE][SHARED_MEM_SIZE];
+    volatile double dataMatrixB[SHARED_MEM_SIZE][SHARED_MEM_SIZE];
 };
 
 enum {
