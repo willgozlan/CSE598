@@ -1,26 +1,23 @@
-# # the compiler: gcc for C program, define as g++ for C++
-# CC = gcc
+# the compiler: gcc for C program
+CC = gcc
 
-#   # compiler flags:
-#   #  -g    adds debugging information to the executable file
-#   #  -Wall turns on most, but not all, compiler warnings
-# CFLAGS  = -Wall -pthread
+# compiler flags, for server and client:
+CFLAGS_SERVER  = -Wall -lrt -pthread 
+CFLAGS_CLIENT  = -Wall -lrt
 
-# # the build target executable:
+# the build target executable:
 TARGET = server_fifo client_fifo
-# OBJS = dense_mm.c  list.c 
 
-# all: $(TARGET)
+# required objects for server
+OBJS_SERVER =  list.c dense_mm.c  
 
-# $(TARGET): %: %.c
-# 	$(CC) $(CFLAGS) ${OBJS} $< -o $@ 
+all: $(TARGET)
 
-# clean:
-# 	$(RM) $(TARGET)
+server_fifo: %: %.c
+	$(CC) $(CFLAGS_SERVER) ${OBJS_SERVER} $< -o $@ 
 
-all:
-	gcc -Wall -lrt -pthread -o server_fifo list.c dense_mm.c server_fifo.c
-	gcc -Wall -lrt -o client_fifo client_fifo.c
+client_fifo: %: %.c
+	$(CC) $(CFLAGS_CLIENT) $< -o $@ 
 
 clean:
-	rm server_fifo client_fifo
+	$(RM) $(TARGET)

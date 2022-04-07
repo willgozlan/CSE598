@@ -4,8 +4,19 @@
  * Adopted From: https://stackoverflow.com/questions/8611035/proper-fifo-client-server-connection
 */
 
-
-/*
+ 
+/*      
+   
+Notes (4/7):        
+   - Dynamic allocation of matrices isn't totally necissary, but cool. Static alocation ok. 
+               Good how it is now.
+               Make both versions and compare the 2. 
+   - Trace on kernelshark 
+   - Play with both sched FIFO and both schedRR
+                  first one runs to completion     2 processes switched out
+         Use sched_setscheduler in server, to set it since threads will inherent it.
+   - Linux CPU Cgroups to assign budgets for each client process
+   - Don't need locks for shared memory, as thought
 
             Notes(3/31): Mark Bober (EIT) (Or Support@EIT) To run on LinuxLab
             Change signal handler to Real Time Signal
