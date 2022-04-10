@@ -43,10 +43,11 @@ int main(void)
    int read_return_val;
 
    pthread_t thread_id_fifo_open;
+   struct sched_param sp;
 
    // Setup SIGNAL Handler for SIGINT, to cleanly exit
    struct sigaction sa; 
-   memset (&sa, 0, sizeof(sa));  // Added this fixed not getting signal
+   memset (&sa, 0, sizeof(sa)); 
    sa.sa_sigaction = shutdown;
    if(sigaction(SIGINT, &sa, NULL) < 0)
    {
@@ -54,8 +55,16 @@ int main(void)
       return BAD_SIGACTION;
    }
 
+   sp.sched_priority = HIGH_SCHED_PRIO;
+
+   if(sched_setscheduler(0, SCHED_FIFO, &sp) == ERROR){  // SCHED_FIFO or SCHED_RR
+      perror("sched_setscheduler");
+      return BAD_SET_SCHED;
+   }
+
    errno = 0;
 
+   // Initialize linked list of clients
    List * list = make_list();
 
    /* create the FIFO with syscall */
@@ -66,7 +75,6 @@ int main(void)
    }
   
 
-   /* open, read, and display the message from the FIFO */
    client_to_server = open(client_to_server_fifo, O_RDONLY);
 
    if(errno == EINTR)
@@ -130,7 +138,7 @@ int main(void)
       }
 
 
-      // Spawn a thread to go off and do the work 
+      // Spawn a thread to go off and do the work, setting data in struct
       struct pthread_create_args pthread_args;
       pthread_args.matrix_size = mc.matrix_size;
       pthread_args.server_to_client_id = server_to_client;
@@ -151,7 +159,6 @@ int main(void)
 
       printf("Worker thread launched!\n");
 
-      /* clear out struct from any data */
       memset(&mc, 0, sizeof(mc));
    }
 

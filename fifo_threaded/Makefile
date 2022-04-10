@@ -14,10 +14,10 @@ OBJS_SERVER =  list.c dense_mm.c
 all: $(TARGET)
 
 server_fifo: %: %.c
-	$(CC) $(CFLAGS_SERVER) ${OBJS_SERVER} $< -o $@ 
+	$(CC) ${OBJS_SERVER}$< -o $@ $(CFLAGS_SERVER)
 
 client_fifo: %: %.c
-	$(CC) $(CFLAGS_CLIENT) $< -o $@ 
+	$(CC) $< -o $@ $(CFLAGS_CLIENT) 
 
 clean:
 	$(RM) $(TARGET)

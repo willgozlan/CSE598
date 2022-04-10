@@ -10,12 +10,10 @@
 #include <errno.h>
 #include <sys/mman.h>
 
-
 #include "list.h"
 #include "dense_mm.h"
 
-#define ERROR -1
-#define BUF_SIZE 100
+#define HIGH_SCHED_PRIO 99
 
 struct matrix_computation
 {
@@ -24,10 +22,6 @@ struct matrix_computation
    char server_to_client_path[BUF_SIZE];
    char shm_location[BUF_SIZE];
 }matrix_computation;
-
-
-
-
 
 void shutdown(int signum, siginfo_t *siginfo, void *context);
 

@@ -21,8 +21,9 @@ int main(int argc, char *argv[])
    int requested_priority, requested_matrix_size;
    double computation_result; 
 
+   int print_flag = FALSE;
 
-   if(argc != EXPECTED_ARGUMENTS)
+   if(argc != MIN_EXPECTED_ARGUMENTS && argc != MAX_EXPECTED_ARGUMENTS)
    {
       usage_message(argv[PROGRAM_NAME]);
       return BAD_ARGS;
@@ -41,6 +42,11 @@ int main(int argc, char *argv[])
       printf("Bad command line agument. Expected integer\n");
       usage_message(argv[PROGRAM_NAME]);
       return BAD_PRIORITY;
+   }
+
+   if(argc == MAX_EXPECTED_ARGUMENTS)
+   {
+      print_flag = TRUE;
    }
 
    // Get location of FIFO
@@ -89,9 +95,6 @@ int main(int argc, char *argv[])
       return BAD_MMAP;
    }
 
-   shm_mapped->write_guard = 0;
-   shm_mapped->read_guard = 0;
-   shm_mapped->delete_guard = 0;
    // shm_mapped->data = calloc(requested_matrix_size*requested_matrix_size, sizeof(int));
 
    // if(shm_mapped->data == NULL)
@@ -100,6 +103,7 @@ int main(int argc, char *argv[])
    //    return BAD_ALLOC;
    // }
 
+   // Setup Matrices and Initialize Coefficients
    double value = 0.0;
    for(int i = 0; i < requested_matrix_size; ++i)
    {
@@ -121,14 +125,13 @@ int main(int argc, char *argv[])
    }      
 
 
+   // Setup struct data to send to server
    struct matrix_computation mc;
    mc.matrix_size = requested_matrix_size; 
    mc.priority = requested_priority;
 
    strncpy(mc.shm_location, shm_location, sizeof(mc.shm_location));
    strncpy(mc.server_to_client_path, server_to_client_fifo, sizeof(mc.server_to_client_path));
-
-   printf("%s\n", mc.shm_location);
 
    client_to_server = open(client_to_server_fifo, O_WRONLY);
 
@@ -138,6 +141,7 @@ int main(int argc, char *argv[])
       return BAD_OPEN;
    }
 
+   // Send request to server
    if(write(client_to_server, &mc, sizeof(struct matrix_computation)) == ERROR)
    {
       perror("write");
@@ -153,22 +157,26 @@ int main(int argc, char *argv[])
    }
 
 
+   // Wait for server to finish, blocking on read() call
    if(read(server_to_client, &computation_result, sizeof(computation_result)) == ERROR)
    {
       perror("READ");
       return BAD_READ;
    }
 
-   printf("Sever sent computed matrix below:\n"); 
+   printf("Sever completed computing matrix.\n"); 
 
-   for(int i = 0; i < requested_matrix_size; ++i)
+   if(print_flag)
    {
-      for(int j = 0; j < requested_matrix_size; ++j)
+      for(int i = 0; i < requested_matrix_size; ++i)
       {
-         printf("%.2lf ", shm_mapped->dataMatrixA[i][j]);
-      }
-      printf("\n");
-   }      
+         for(int j = 0; j < requested_matrix_size; ++j)
+         {
+            printf("%.2lf ", shm_mapped->dataMatrixA[i][j]);
+         }
+         printf("\n");
+      }      
+   }
 
    if(close(client_to_server) == ERROR || close(server_to_client) == ERROR)
    {
@@ -190,5 +198,5 @@ int main(int argc, char *argv[])
 
 void usage_message(char* program_name)
 {
-   printf("Usage: %s <matrix_size> <priority>\n", program_name);
+   printf("Usage: %s <matrix_size> <priority> <print (optional, anything)>\n", program_name);
 }

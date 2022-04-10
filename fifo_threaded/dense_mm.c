@@ -16,9 +16,6 @@
 
 #include "dense_mm.h"
 
-const int num_expected_args = 2;
-const unsigned sqrt_of_UINT32_MAX = 65536;
-
 
 void* dense_mm(void* void_args)
 {
@@ -32,35 +29,51 @@ void* dense_mm(void* void_args)
 	int matrix_size = args->matrix_size;
 	int server_to_client = args->server_to_client_id;
 
+	struct sched_param sp;
 
-    if (setpriority(PRIO_PGRP, 0, args->requested_priority) == -1)
-    {
-        perror("setpriority");
-		matrix_compute_result = 0.0;
+	sp.sched_priority = args->requested_priority;
+
+ 	if(sched_setscheduler(0, SCHED_FIFO, &sp) == ERROR){  // SCHED_FIFO or SCHED_RR
+    	perror("sched_setscheduler");
 		if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)
 		{
 			perror("write");
 			return NULL;
 		}
 		return NULL;
-    }
-	// Shared Memory
-	  char* shm_loc = args->shm_location;
-      // Shared Memory 
-      struct shared_mem_struct * shm_mapped;
-      printf("%s\n", shm_loc);
-      int shm_fd = shm_open(shm_loc , O_RDWR, S_IRWXU);
-      if(shm_fd == ERROR)
-      {
-         perror("shm_open");
-         return NULL;
-      }
-      shm_mapped = (struct shared_mem_struct *) mmap(NULL, sizeof(struct shared_mem_struct), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
-      if(shm_mapped == MAP_FAILED)
-      {
-         perror("mmap");
-         return NULL;
-      }
+   	}
+
+
+    // if (setpriority(PRIO_PGRP, 0, args->requested_priority) == -1)
+    // {
+    //     perror("setpriority");
+	// 	matrix_compute_result = 0.0;
+	// 	if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)
+	// 	{
+	// 		perror("write");
+	// 		return NULL;
+	// 	}
+	// 	return NULL;
+    // }
+
+
+
+	// Find shared memory location and open it
+	char* shm_loc = args->shm_location;
+	struct shared_mem_struct * shm_mapped;
+	printf("%s\n", shm_loc);
+	int shm_fd = shm_open(shm_loc , O_RDWR, S_IRWXU);
+	if(shm_fd == ERROR)
+	{
+		perror("shm_open");
+		return NULL;
+	}
+	shm_mapped = (struct shared_mem_struct *) mmap(NULL, sizeof(struct shared_mem_struct), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+	if(shm_mapped == MAP_FAILED)
+	{
+		perror("mmap");
+		return NULL;
+	}
 
 	// printf("Matrix Size: %d\n", matrix_size);
     //   printf("Shared Memory Values:\n");
@@ -76,7 +89,7 @@ void* dense_mm(void* void_args)
 
 
 
-	if(matrix_size > sqrt_of_UINT32_MAX ){
+	if(matrix_size > SQRT_UINT32_MAX){
 		printf("ERROR: Matrix size must be between zero and 65536!\n");
 		matrix_compute_result = 0.0;
 		if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)
@@ -89,7 +102,7 @@ void* dense_mm(void* void_args)
 
 	squared_size = matrix_size * matrix_size;
 
-	printf("Generating matrices...\n");
+	// printf("Generating matrices...\n");
 
 	// A = (double*) malloc( sizeof(double) * squared_size );
 	// B = (double*) malloc( sizeof(double) * squared_size );
@@ -99,7 +112,7 @@ void* dense_mm(void* void_args)
 		C[index] = 0.0;
 	}
 
-	printf("Multiplying matrices...\n");
+	// printf("Multiplying matrices...\n");
 
 	for( row = 0; row < matrix_size; row++ ){
 		for( col = 0; col < matrix_size; col++ ){
@@ -109,16 +122,16 @@ void* dense_mm(void* void_args)
 		}
 	}
 
-	printf("Multiplication done!\n");
+	// printf("Multiplication done!\n");
 
-	for(int row = 0; row < matrix_size; ++row)
-   	{
-    	for(int col = 0; col < matrix_size; ++col)
-    	{
-        	printf("%.2lf ", C[row*matrix_size + col]);
-    	}
-		printf("\n");
-   	}      
+	// for(int row = 0; row < matrix_size; ++row)
+   	// {
+    // 	for(int col = 0; col < matrix_size; ++col)
+    // 	{
+    //     	printf("%.2lf ", C[row*matrix_size + col]);
+    // 	}
+	// 	printf("\n");
+   	// }      
 
 
 	for(int row = 0; row < matrix_size; ++row)
@@ -129,12 +142,9 @@ void* dense_mm(void* void_args)
     	}
    	}      
 
-	// for(index = 0; index < squared_size; index++ ){
-		
-	// }
 	matrix_compute_result = C[0];
 
-    printf("Wrote back values to client shared memory!\n");
+    printf("Multiplication done...Wrote back values to client shared memory!\n");
 
 	// Send back result to client
 	if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)
@@ -143,7 +153,5 @@ void* dense_mm(void* void_args)
 		return NULL;
 	}
 	
-
 	return NULL;
-
 }
