@@ -2,6 +2,8 @@
 
 #define ERROR -1
 #define BUF_SIZE 100
+#define PROGRAM_NAME 0
+
 
 enum {
     SUCCESS,
@@ -22,5 +24,6 @@ enum {
     BAD_PRIORITY, 
     BAD_SPRINTF, 
     BAD_TRUNCATE,
-    BAD_SET_SCHED
+    BAD_SET_SCHED,
+    BAD_SET_CPU
 };

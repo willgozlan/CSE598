@@ -32,7 +32,7 @@ Notes (4/7):
 atomic_int server_on = 1;
 
 
-int main(void)
+int main(int argc, char **argv)
 {
    int client_to_server;
    char *client_to_server_fifo = "/tmp/client_to_server_fifo";
@@ -45,6 +45,8 @@ int main(void)
    pthread_t thread_id_fifo_open;
    struct sched_param sp;
 
+   int single_core = 0;
+
    // Setup SIGNAL Handler for SIGINT, to cleanly exit
    struct sigaction sa; 
    memset (&sa, 0, sizeof(sa)); 
@@ -54,6 +56,32 @@ int main(void)
       perror("sigaction");
       return BAD_SIGACTION;
    }
+
+   // Check command options
+   if(parse_command_line_args(argc, argv, &single_core) == ERROR)
+   {
+      return usage_message(argv[PROGRAM_NAME]);
+   }
+
+
+   if(single_core)
+   {
+      cpu_set_t *cpu_set;
+      cpu_set = malloc(sizeof(cpu_set_t));
+      if(cpu_set == NULL)
+      {
+         perror("malloc");
+         return BAD_ALLOC;
+      }
+      CPU_ZERO(cpu_set);
+      CPU_SET(CORE_ZERO, cpu_set);
+
+      if(sched_setaffinity(THIS_THREAD, sizeof(cpu_set), cpu_set) == -1){
+         perror("sched_setaffinity");
+         return BAD_SET_CPU;
+      }
+   }
+
 
    sp.sched_priority = HIGH_SCHED_PRIO;
 
@@ -211,4 +239,35 @@ void* hold_fifo_open(void* client_to_server_fifo)
    while(1);
 
    return NULL;
+}
+
+
+
+int parse_command_line_args(int argc, char** argv, int* singleCore)
+{
+
+   int opt;
+   while((opt = getopt(argc, argv, "c")) != ERROR) 
+   { 
+      switch(opt) 
+      { 
+         case 'c': 
+            printf("Using single core\n");
+            *singleCore = 1;
+            break;
+         case '?': 
+            printf("Unknown option: %c\n", optopt);
+            return ERROR;
+      } 
+    }
+
+    return SUCCESS; 
+}
+
+
+int usage_message(char* program_name)
+{
+   printf("Usage: %s [-c]\n", program_name);
+   printf("-c flag means run with single core\n");
+   return BAD_ARGS;
 }

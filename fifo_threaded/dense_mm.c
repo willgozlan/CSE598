@@ -33,7 +33,7 @@ void* dense_mm(void* void_args)
 
 	sp.sched_priority = args->requested_priority;
 
- 	if(sched_setscheduler(0, SCHED_FIFO, &sp) == ERROR){  // SCHED_FIFO or SCHED_RR
+ 	if(sched_setscheduler(THIS_THREAD, SCHED_FIFO, &sp) == ERROR){  // SCHED_FIFO or SCHED_RR
     	perror("sched_setscheduler");
 		if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)
 		{

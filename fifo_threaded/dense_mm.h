@@ -12,6 +12,7 @@
 
 
 #define SQRT_UINT32_MAX 65536
+#define THIS_THREAD 0
 
 struct pthread_create_args
 {
