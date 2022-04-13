@@ -31,30 +31,45 @@ void* dense_mm(void* void_args)
 
 	struct sched_param sp;
 
-	sp.sched_priority = args->requested_priority;
+	
+	if(args->single_core)
+	{
+		cpu_set_t *cpu_set;
+    	cpu_set = malloc(sizeof(cpu_set_t));
+		if(cpu_set == NULL)
+		{
+			perror("malloc");
+			if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == ERROR)
+			{
+				perror("write");
+				return NULL;
+			}
+		}
 
- 	if(sched_setscheduler(THIS_THREAD, SCHED_FIFO, &sp) == ERROR){  // SCHED_FIFO or SCHED_RR
+		CPU_ZERO(cpu_set);
+
+		CPU_SET(CORE_ZERO, cpu_set);
+
+		if(sched_setaffinity(THIS_THREAD, sizeof(cpu_set), cpu_set) == ERROR){
+			perror("sched_setaffinity");
+			if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == ERROR)
+			{
+				perror("write");
+				return NULL;
+			}		
+		}
+   	}
+
+	sp.sched_priority = args->requested_priority;
+	if(sched_setscheduler(THIS_THREAD, args->scheduler_policy, &sp) == ERROR){  
     	perror("sched_setscheduler");
-		if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)
+		if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == ERROR)
 		{
 			perror("write");
 			return NULL;
 		}
 		return NULL;
    	}
-
-
-    // if (setpriority(PRIO_PGRP, 0, args->requested_priority) == -1)
-    // {
-    //     perror("setpriority");
-	// 	matrix_compute_result = 0.0;
-	// 	if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)
-	// 	{
-	// 		perror("write");
-	// 		return NULL;
-	// 	}
-	// 	return NULL;
-    // }
 
 
 
@@ -92,7 +107,7 @@ void* dense_mm(void* void_args)
 	if(matrix_size > SQRT_UINT32_MAX){
 		printf("ERROR: Matrix size must be between zero and 65536!\n");
 		matrix_compute_result = 0.0;
-		if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)
+		if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == ERROR)
 		{
 			perror("write");
 			return NULL;
@@ -147,7 +162,7 @@ void* dense_mm(void* void_args)
     printf("Multiplication done...Wrote back values to client shared memory!\n");
 
 	// Send back result to client
-	if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == -1)
+	if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == ERROR)
 	{
 		perror("write");
 		return NULL;

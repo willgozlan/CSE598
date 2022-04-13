@@ -46,6 +46,7 @@ int main(int argc, char **argv)
    struct sched_param sp;
 
    int single_core = 0;
+   int scheduler_policy = SCHED_RR; 
 
    // Setup SIGNAL Handler for SIGINT, to cleanly exit
    struct sigaction sa; 
@@ -58,34 +59,14 @@ int main(int argc, char **argv)
    }
 
    // Check command options
-   if(parse_command_line_args(argc, argv, &single_core) == ERROR)
+   if(parse_command_line_args(argc, argv, &single_core, &scheduler_policy) == ERROR)
    {
       return usage_message(argv[PROGRAM_NAME]);
    }
 
-
-   if(single_core)
-   {
-      cpu_set_t *cpu_set;
-      cpu_set = malloc(sizeof(cpu_set_t));
-      if(cpu_set == NULL)
-      {
-         perror("malloc");
-         return BAD_ALLOC;
-      }
-      CPU_ZERO(cpu_set);
-      CPU_SET(CORE_ZERO, cpu_set);
-
-      if(sched_setaffinity(THIS_THREAD, sizeof(cpu_set), cpu_set) == -1){
-         perror("sched_setaffinity");
-         return BAD_SET_CPU;
-      }
-   }
-
-
    sp.sched_priority = HIGH_SCHED_PRIO;
 
-   if(sched_setscheduler(0, SCHED_FIFO, &sp) == ERROR){  // SCHED_FIFO or SCHED_RR
+   if(sched_setscheduler(0, scheduler_policy, &sp) == ERROR){ 
       perror("sched_setscheduler");
       return BAD_SET_SCHED;
    }
@@ -172,6 +153,8 @@ int main(int argc, char **argv)
       pthread_args.server_to_client_id = server_to_client;
       pthread_args.requested_priority = mc.priority;
       strncpy(pthread_args.shm_location, mc.shm_location, sizeof(pthread_args.shm_location));
+      pthread_args.single_core = single_core;
+      pthread_args.scheduler_policy = scheduler_policy;
 
 
       pthread_t thread_id_matrix;
@@ -243,18 +226,29 @@ void* hold_fifo_open(void* client_to_server_fifo)
 
 
 
-int parse_command_line_args(int argc, char** argv, int* singleCore)
+int parse_command_line_args(int argc, char** argv, int* singleCore, int* scheduler_policy)
 {
 
    int opt;
-   while((opt = getopt(argc, argv, "c")) != ERROR) 
+   while((opt = getopt(argc, argv, "cfrh")) != ERROR) 
    { 
       switch(opt) 
       { 
          case 'c': 
-            printf("Using single core\n");
+            printf("Using single core.\n");
             *singleCore = 1;
             break;
+         case 'f': 
+            printf("Using SCHED_FIFO scheduling policy.\n");
+            *scheduler_policy = SCHED_FIFO;
+            break;
+         case 'r': 
+            printf("Using SCHED_RR scheduling policy.\n");
+            *scheduler_policy = SCHED_RR;
+            break;
+         case 'h': 
+            printf("HELP:\n");
+            return ERROR;
          case '?': 
             printf("Unknown option: %c\n", optopt);
             return ERROR;
@@ -267,7 +261,10 @@ int parse_command_line_args(int argc, char** argv, int* singleCore)
 
 int usage_message(char* program_name)
 {
-   printf("Usage: %s [-c]\n", program_name);
-   printf("-c flag means run with single core\n");
+   printf("Usage: %s [-c] [-f] [-r] [-h]\n", program_name);
+   printf("-c flag means run with single core.\n");
+   printf("-f flag means run using SCHED_FIFO scheduling policy.\n");
+   printf("-r flag means run using SCHED_RR scheduling policy (default).\n");
+   printf("-h to show this usage message for help.\n");
    return BAD_ARGS;
 }

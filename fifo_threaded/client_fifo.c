@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
       perror("shm_open");
       return BAD_SHM_OPEN;
    }
-   if(ftruncate(shm_fd, sizeof(struct shared_mem_struct)) == -1)
+   if(ftruncate(shm_fd, sizeof(struct shared_mem_struct)) == ERROR)
    {
       perror("ftruncate");
       return BAD_TRUNCATE;
