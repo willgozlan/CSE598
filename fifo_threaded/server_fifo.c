@@ -12,6 +12,7 @@ Notes (4/14):
    - Possibly change matrix multiply to Cache-Optimal version 
    - Client is in a Cgroup, and Server thread joins that Cgroup when it links (inventing new pattern)
    - Server in own Cgroup, then above, and compare performance 
+   - Marion: Hierarchy in CPU Cgroups- How does Linux implement this? 
    
 Notes (4/7):        
    - Dynamic allocation of matrices isn't totally necissary, but cool. Static alocation ok. 
