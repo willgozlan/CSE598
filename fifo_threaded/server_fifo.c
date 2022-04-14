@@ -6,6 +6,12 @@
 
  
 /*      
+Notes (4/14):
+   - SCHED_DEADLINE add to flag set and see how it performs as well 
+   - Change to dynamic allocation
+   - Possibly change matrix multiply to Cache-Optimal version 
+   - Client is in a Cgroup, and Server thread joins that Cgroup when it links (inventing new pattern)
+   - Server in own Cgroup, then above, and compare performance 
    
 Notes (4/7):        
    - Dynamic allocation of matrices isn't totally necissary, but cool. Static alocation ok. 
