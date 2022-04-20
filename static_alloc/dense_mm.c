@@ -117,28 +117,22 @@ void* dense_mm(void* void_args)
 
 	squared_size = matrix_size * matrix_size;
 
+	// printf("Generating matrices...\n");
 
-	C = calloc(squared_size, sizeof(double));
-	if(C == NULL)
-	{
-		perror("calloc");
-		if(write(server_to_client, &matrix_compute_result, sizeof(matrix_compute_result)) == ERROR)
-		{
-			perror("write");
-			return NULL;
-		}
-		return NULL;
+	// A = (double*) malloc( sizeof(double) * squared_size );
+	// B = (double*) malloc( sizeof(double) * squared_size );
+	C = (double*) malloc( sizeof(double) * squared_size );
+
+	for( index = 0; index < squared_size; index++ ){
+		C[index] = 0.0;
 	}
 
-	printf("Multiplying matrices...\n");
-	printf("First matrix Coefficent: %lf\n", shm_mapped->dataMatrixA[0]);
+	// printf("Multiplying matrices...\n");
 
-
-	for(row = 0; row < matrix_size; ++row){
-		for(col = 0; col < matrix_size; ++col){
-			for(index = 0; index < matrix_size; ++index){
-				printf("hello\n");
-				C[row*matrix_size + col] += shm_mapped->dataMatrixA[row * matrix_size + index] * shm_mapped->dataMatrixB[index * matrix_size + col];
+	for( row = 0; row < matrix_size; row++ ){
+		for( col = 0; col < matrix_size; col++ ){
+			for( index = 0; index < matrix_size; index++){
+			C[row*matrix_size + col] += ((shm_mapped->dataMatrixA[row][index]) *(shm_mapped->dataMatrixB[index][col]));
 			}	
 		}
 	}
@@ -159,7 +153,7 @@ void* dense_mm(void* void_args)
    	{
     	for(int col = 0; col < matrix_size; ++col)
     	{
-        	shm_mapped->dataMatrixA[row * matrix_size + col] = C[row * matrix_size + col];
+        	shm_mapped->dataMatrixA[row][col] = C[row*matrix_size + col];
     	}
    	}      
 

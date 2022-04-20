@@ -3,7 +3,7 @@
  * Server program
  * Adopted From: https://stackoverflow.com/questions/8611035/proper-fifo-client-server-connection
 */
- 
+
 #include "server_fifo.h"
 
 atomic_int server_on = 1;

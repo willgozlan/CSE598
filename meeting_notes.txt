@@ -1,0 +1,34 @@
+   
+Question: 
+   - Parameters for SCHED_DEADLINE?? 
+   - Pointer use in shared memory?? 
+   - What is point of cache optimal Matrix Multiply if we want workload? 
+         Could use cachegrind tool available in valgrind
+         Cache Memory 2 from CSE361S Slides
+
+
+Notes (4/14):
+   - SCHED_DEADLINE add to flag set and see how it performs as well 
+   - Change to dynamic allocation
+   - Possibly change matrix multiply to Cache-Optimal version 
+   - Client is in a Cgroup, and Server thread joins that Cgroup when it links (inventing new pattern)
+   - Server in own Cgroup, then above, and compare performance 
+   - Marion: Hierarchy in CPU Cgroups- How does Linux implement this? 
+   
+Notes (4/7):        
+   - Dynamic allocation of matrices isn't totally necissary, but cool. Static alocation ok. 
+               Good how it is now.
+               Make both versions and compare the 2. 
+   - Trace on kernelshark 
+   - Play with both sched FIFO and both schedRR
+                  first one runs to completion     2 processes switched out
+         Use sched_setscheduler in server, to set it since threads will inherent it.
+   - Linux CPU Cgroups to assign budgets for each client process
+   - Don't need locks for shared memory, as thought
+
+            Notes(3/31): Mark Bober (EIT) (Or Support@EIT) To run on LinuxLab
+            Change signal handler to Real Time Signal
+            Shared Memory for Matrix Coefficents (POSIX Shared Memory)
+   In Future: Permissions of the shared memory so no one has capability to access, until given
+   Marion: CH. 54 LPI (Scoped Shared Memory) --> Step Farther (CH.48 LPI) System 5 shared memory 
+                                                         Access Control Lists -> Closer to Capability Model

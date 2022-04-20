@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
    char shm_location[BUF_SIZE];
 
    
-   int requested_priority, requested_matrix_size, matrix_square_space;
+   int requested_priority, requested_matrix_size;
    double computation_result; 
 
    int print_flag = FALSE;
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
       return BAD_FIFO;
    }
 
-   matrix_square_space = requested_matrix_size * requested_matrix_size;
+
    
    struct shared_mem_struct * shm_mapped;
 
@@ -103,39 +103,23 @@ int main(int argc, char *argv[])
    //    return BAD_ALLOC;
    // }
 
-   shm_mapped->dataMatrixA = calloc(matrix_square_space, sizeof(int));
-   if(shm_mapped->dataMatrixA == NULL)
-   {
-      perror("calloc");
-      return BAD_ALLOC;
-   }
-
-   shm_mapped->dataMatrixB = calloc(matrix_square_space, sizeof(int));
-   if(shm_mapped->dataMatrixB == NULL)
-   {
-      perror("calloc");
-      return BAD_ALLOC;
-   }
-   printf("DONE CALLOC!\n");
-
-
    // Setup Matrices and Initialize Coefficients
    double value = 0.0;
-   for(int row = 0; row < requested_matrix_size; ++row)
+   for(int i = 0; i < requested_matrix_size; ++i)
    {
-      for(int col = 0; col < requested_matrix_size; ++col)
+      for(int j = 0; j < requested_matrix_size; ++j)
       {
-         shm_mapped->dataMatrixA[row * requested_matrix_size + col] = value;
+         shm_mapped->dataMatrixA[i][j] = value;
          ++value;
       }
    }      
 
    value = 0.0;
-   for(int row = 0; row < requested_matrix_size; ++row)
+   for(int i = 0; i < requested_matrix_size; ++i)
    {
-      for(int col = 0; col < requested_matrix_size; ++col)
+      for(int j = 0; j < requested_matrix_size; ++j)
       {
-         shm_mapped->dataMatrixB[row * requested_matrix_size + col] = value;
+         shm_mapped->dataMatrixB[i][j] = value;
          ++value;
       }
    }      
@@ -184,11 +168,11 @@ int main(int argc, char *argv[])
 
    if(print_flag)
    {
-      for(int row = 0; row < requested_matrix_size; ++row)
+      for(int i = 0; i < requested_matrix_size; ++i)
       {
-         for(int col = 0; col < requested_matrix_size; ++col)
+         for(int j = 0; j < requested_matrix_size; ++j)
          {
-            printf("%.2lf ", shm_mapped->dataMatrixA[row * requested_matrix_size + col]);
+            printf("%.2lf ", shm_mapped->dataMatrixA[i][j]);
          }
          printf("\n");
       }      

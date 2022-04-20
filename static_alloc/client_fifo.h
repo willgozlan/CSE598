@@ -36,6 +36,6 @@ void usage_message();
 #define SHARED_MEM "/share_mem"
 
 struct shared_mem_struct{
-    volatile double *dataMatrixA;
-    volatile double *dataMatrixB;
+    volatile double dataMatrixA[SHARED_MEM_SIZE][SHARED_MEM_SIZE];
+    volatile double dataMatrixB[SHARED_MEM_SIZE][SHARED_MEM_SIZE];
 };
