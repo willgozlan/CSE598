@@ -1,10 +1,15 @@
    
 Question: 
    - Parameters for SCHED_DEADLINE?? 
+      - Wait for periodic timer version to see interaction 
    - Pointer use in shared memory?? 
+      - Don't use calloc- ftruncate and mmap with size of this.
    - What is point of cache optimal Matrix Multiply if we want workload? 
          Could use cachegrind tool available in valgrind
          Cache Memory 2 from CSE361S Slides
+         Compare cache performance vs scheduling policy vs requests that come in 
+         Gill: Single thread
+         Marion: Performance monitoring from 522 Studio 3 to see cache hits/misses 
 
 
 Notes (4/14):
