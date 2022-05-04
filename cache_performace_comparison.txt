@@ -1,0 +1,91 @@
+
+Priority Fixed to 20:
+
+Single Core; SCHED_FIFO; Non-Optimal MM:
+    192,313,801      cache-misses              #    2.036 % of all cache refs
+    9,444,620,493      cache-references
+
+    34.754094748 seconds time elapsed
+
+    57.009610000 seconds user
+    0.029697000 seconds sys
+
+Single Core; SCHED_FIFO; Optimal MM:
+    2,984,736      cache-misses              #    0.038 % of all cache refs
+    7,948,245,226      cache-references
+
+    38.400086964 seconds time elapsed
+
+    48.572157000 seconds user
+    0.030001000 seconds sys
+
+
+
+Multi Core; SCHED_FIFO; Non-Optimal MM:
+    189,799,055      cache-misses              #    2.013 % of all cache refs
+    9,429,253,815      cache-references
+
+    15.011732480 seconds time elapsed
+
+    43.713390000 seconds user
+    0.069734000 seconds sys
+
+
+
+Multi Core; SCHED_FIFO; Optimal MM:
+    4,389,204      cache-misses              #    0.055 % of all cache refs
+    7,924,064,690      cache-references
+
+    11.676597078 seconds time elapsed
+
+    26.719655000 seconds user
+    0.050018000 seconds sys
+
+
+
+
+Single Core; SCHED_RR; Non-Optimal MM:
+    192,017,024      cache-misses              #    2.033 % of all cache refs
+    9,445,763,283      cache-references
+
+    36.650408952 seconds time elapsed
+
+    60.309010000 seconds user
+    0.099750000 seconds sys
+
+
+
+Single Core; SCHED_RR; Optimal MM:
+    3,021,613      cache-misses              #    0.038 % of all cache refs
+    7,951,312,447      cache-references
+
+    39.547371987 seconds time elapsed
+
+    53.727254000 seconds user
+    0.039842000 seconds sys
+
+
+Multi Core; SCHED_RR; Non-Optimal MM:
+    205,001,414      cache-misses              #    2.174 % of all cache refs
+    9,429,668,902      cache-references
+
+    16.510777467 seconds time elapsed
+
+    42.290468000 seconds user
+    0.059830000 seconds sys
+
+
+Multi Core; SCHED_RR; Optimal MM:
+    2,990,001      cache-misses              #    0.038 % of all cache refs
+    7,928,751,667      cache-references
+
+    13.947199052 seconds time elapsed
+
+    29.948388000 seconds user
+    0.049764000 seconds sys
+
+
+
+----------ANALYSIS----------
+    - Cache policy of MM dominates of scheduling policy.
+    - Scheduling policies mostly lead to same cache performance 

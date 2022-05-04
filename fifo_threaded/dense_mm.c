@@ -19,6 +19,9 @@
 // Uncomment this to enable printing from server side
 // #define PRINT_MATRIX_SERVER
 
+// Uncomment to enable Cache Optimal Matrix Multiply
+// #define CACHE_OPTIMAL_MM
+
 void *dense_mm(void *void_args)
 {
 
@@ -36,6 +39,10 @@ void *dense_mm(void *void_args)
 	char *shm_loc;
 	double *shm_mapped;
 	int shm_fd, memory_matrix_size, memory_matrix_B_offset_from_A;
+
+#ifdef CACHE_OPTIMAL_MM
+	int temp;
+#endif
 
 	if (args->single_core)
 	{
@@ -127,6 +134,25 @@ void *dense_mm(void *void_args)
 
 	printf("Multiplying matrices...\n");
 
+#ifdef CACHE_OPTIMAL_MM
+	// Cache Optimal MM
+
+	for (index = 0; index < matrix_size; index++)
+	{
+		for (row = 0; row < matrix_size; row++)
+		{
+
+			temp = shm_mapped[row * matrix_size + index];
+
+			for (col = 0; col < matrix_size; col++)
+			{
+				C[row * matrix_size + col] += temp * shm_mapped[memory_matrix_B_offset_from_A + (index * matrix_size + col)];
+			}
+		}
+	}
+
+#else
+	// Original, Cache naive MM
 	for (row = 0; row < matrix_size; ++row)
 	{
 		for (col = 0; col < matrix_size; ++col)
@@ -137,6 +163,7 @@ void *dense_mm(void *void_args)
 			}
 		}
 	}
+#endif
 
 #ifdef PRINT_MATRIX_SERVER
 	for (int row = 0; row < matrix_size; ++row)
