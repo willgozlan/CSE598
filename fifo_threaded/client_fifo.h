@@ -6,8 +6,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <errno.h>
-#include <stdlib.h> 
-#include <string.h> 
+#include <stdlib.h>
+#include <string.h>
 #include <sys/mman.h>
 
 #include "return_values.h"
@@ -20,6 +20,7 @@
 #define FALSE 0
 #define TRUE 1
 
+#define READ_WRITE_PERMISSIONS 0666
 
 struct matrix_computation
 {
@@ -27,15 +28,9 @@ struct matrix_computation
     int priority;
     char server_to_client_path[BUF_SIZE];
     char shm_location[BUF_SIZE];
-}matrix_computation;
+} matrix_computation;
 
 void usage_message();
 
-
-#define SHARED_MEM_SIZE 1000
+#define TWO_MATRICES 2
 #define SHARED_MEM "/share_mem"
-
-struct shared_mem_struct{
-    volatile double *dataMatrixA;
-    volatile double *dataMatrixB;
-};

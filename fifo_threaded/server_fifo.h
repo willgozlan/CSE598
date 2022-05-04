@@ -10,8 +10,6 @@
 #include <errno.h>
 #include <sys/mman.h>
 
-
-
 #include "list.h"
 #include "dense_mm.h"
 
@@ -25,12 +23,12 @@ struct matrix_computation
    char shm_location[BUF_SIZE];
    int single_core;
    int scheduler_policy;
-}matrix_computation;
+} matrix_computation;
 
 void shutdown(int signum, siginfo_t *siginfo, void *context);
 
-void* hold_fifo_open(void* client_to_server_fifo);
+void *hold_fifo_open(void *client_to_server_fifo);
 
-int parse_command_line_args(int argc, char** argv, int* singleCore, int* scheduler_policy);
+int parse_command_line_args(int argc, char **argv, int *singleCore, int *scheduler_policy);
 
-int usage_message(char* program_name);
+int usage_message(char *program_name);

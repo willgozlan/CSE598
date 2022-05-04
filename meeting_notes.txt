@@ -2,7 +2,7 @@
 Question: 
    - Parameters for SCHED_DEADLINE?? 
       - Wait for periodic timer version to see interaction 
-   - Pointer use in shared memory?? 
+   - Pointer use in shared memory??    [FIXED 5/3/22]
       - Don't use calloc- ftruncate and mmap with size of this.
    - What is point of cache optimal Matrix Multiply if we want workload? 
          Could use cachegrind tool available in valgrind
@@ -10,11 +10,56 @@ Question:
          Compare cache performance vs scheduling policy vs requests that come in 
          Gill: Single thread
          Marion: Performance monitoring from 522 Studio 3 to see cache hits/misses 
+         
+         Ended up using performance stats (which uses hardware performance counters of CPU) command: 
+         $ perf stat -e cache-misses -e cache-references ./cache_optimal_dense_mm 300
+
+         Results for Original dense_mm for 500 size matrix:
+               63,300,177      cache-misses:u            # 2.094 % of all cache refs
+               3,023,069,371      cache-references:u
+
+               8.898626738 seconds time elapsed
+
+               8.861466000 seconds user
+               0.030004000 seconds sys
+
+         Results for Cache Optimal dense_mm for 500 size matrix:
+               817,476      cache-misses:u            # 0.032 % of all cache refs
+               2,524,564,128      cache-references:u
+
+               5.119169061 seconds time elapsed
+
+               5.092216000 seconds user
+               0.020008000 seconds sys
+       
+
+         Results for Original dense_mm for 1000 size matrix:
+               1,143,874,967      cache-misses:u        # 4.748 % of all cache refs
+               24,092,088,964      cache-references:u
+
+               87.931522410 seconds time elapsed
+
+               87.771355000 seconds user
+               0.070025000 seconds sys
+
+         Results for Cache Optimal dense_mm for 1000 size matrix:
+               7,030,832      cache-misses:u            # 0.035 % of all cache refs
+               20,098,076,481      cache-references:u
+
+               42.470107905 seconds time elapsed
+
+               42.389324000 seconds user
+               0.039989000 seconds sys
+
+
+         Overall:
+            ~ 60X Less Miss Rate for cache optimal versus original on 500 size matrix
+            ~ 135X Less Miss Rate for cache optimal versus original on 1000 size matrix
 
 
 Notes (4/14):
    - SCHED_DEADLINE add to flag set and see how it performs as well 
-   - Change to dynamic allocation
+   - Change to dynamic allocation [DONE]
    - Possibly change matrix multiply to Cache-Optimal version 
    - Client is in a Cgroup, and Server thread joins that Cgroup when it links (inventing new pattern)
    - Server in own Cgroup, then above, and compare performance 

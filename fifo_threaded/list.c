@@ -1,10 +1,11 @@
 // Adopted from https://github.com/skorks/c-linked-list
 #include "list.h"
 
-
-Node * create_node(pthread_t data){
-  Node * newNode = malloc(sizeof(Node));
-  if (!newNode) {
+Node *create_node(pthread_t data)
+{
+  Node *newNode = malloc(sizeof(Node));
+  if (!newNode)
+  {
     return NULL;
   }
   newNode->data = data;
@@ -12,35 +13,41 @@ Node * create_node(pthread_t data){
   return newNode;
 }
 
-List * make_list(){
-  List * list = malloc(sizeof(List));
-  if (!list) {
+List *make_list()
+{
+  List *list = malloc(sizeof(List));
+  if (!list)
+  {
     return NULL;
   }
   list->head = NULL;
   return list;
 }
 
-
-
-void list_add(pthread_t data, List * list){
-  Node * current = NULL;
-  if(list->head == NULL){
+void list_add(pthread_t data, List *list)
+{
+  Node *current = NULL;
+  if (list->head == NULL)
+  {
     list->head = create_node(data);
   }
-  else {
-    current = list->head; 
-    while (current->next!=NULL){
+  else
+  {
+    current = list->head;
+    while (current->next != NULL)
+    {
       current = current->next;
     }
     current->next = create_node(data);
   }
 }
 
-void list_destroy(List * list){
-  Node * current = list->head;
-  Node * next = current;
-  while(current != NULL){
+void list_destroy(List *list)
+{
+  Node *current = list->head;
+  Node *next = current;
+  while (current != NULL)
+  {
     next = current->next;
     free(current);
     current = next;
@@ -48,13 +55,12 @@ void list_destroy(List * list){
   free(list);
 }
 
-
 /*
   void display(List * list) {
     Node * current = list->head;
-    if(list->head == NULL) 
+    if(list->head == NULL)
       return;
-    
+
     for(; current != NULL; current = current->next) {
       printf("%d\n", current->data);
     }
@@ -62,20 +68,20 @@ void list_destroy(List * list){
 
 
   void delete(int data, List * list){
-    Node * current = list->head;            
-    Node * previous = current;           
-    while(current != NULL){           
-      if(current->data == data){      
+    Node * current = list->head;
+    Node * previous = current;
+    while(current != NULL){
+      if(current->data == data){
         previous->next = current->next;
         if(current == list->head)
           list->head = current->next;
         free(current);
         return;
-      }                               
-      previous = current;             
-      current = current->next;        
-    }                                 
-  }                                   
+      }
+      previous = current;
+      current = current->next;
+    }
+  }
 
   void reverse(List * list){
     Node * reversed = NULL;
@@ -96,7 +102,7 @@ void list_destroy(List * list){
       {
           Node *next_node = list->head->next; //points to second node in list
           list->head->next = previous;//at initial making head as NULL
-          previous = list->head;//changing the nextpointer direction as to point backward node 
+          previous = list->head;//changing the nextpointer direction as to point backward node
           list->head = next_node; //moving forward by next node
       }
       list->head=previous;
