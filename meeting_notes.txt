@@ -11,7 +11,11 @@ Question:
          Gill: Single thread
          Marion: Performance monitoring from 522 Studio 3 to see cache hits/misses 
          
+
          Ended up using performance stats (which uses hardware performance counters of CPU) command: 
+            https://stackoverflow.com/questions/10082517/simplest-tool-to-measure-c-program-cache-hit-miss-and-cpu-time-in-linux
+            https://perf.wiki.kernel.org/index.php/Tutorial
+            
          $ perf stat -e cache-misses -e cache-references ./cache_optimal_dense_mm 300
 
          Results for Original dense_mm for 500 size matrix:
