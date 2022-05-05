@@ -1,5 +1,22 @@
-   
-Question: 
+
+
+Meeting Notes (5/5/22):
+   - 
+
+Updates (5/4/22):
+   - Fixed Dynamic Allocation bug, though omiited struct in favor of access to Pointer directly, using offset
+   - Added option to use normal, naive MM or cache-optimal version (conditional compilation so that doesn't effect performance)
+      - Issues with valgrind on Pi, so went with wrapper for CPU hardware performance counters
+         - Tested on LinuxLab first as well using valgrind, then with perf tool
+      - Not much cache performance difference as expected. Why?
+   - Implemented client setup cgroup and server thread joins that cgroup
+      when it connects, basicially inventing a new pattern.
+	 How does deleting a cgroup work, or is it left to OS to cleanup?
+         However, PID is the same between threads since we use pthread_create. 
+         How to address this, or is it okay?   
+
+
+Question (4/20/22): 
    - Parameters for SCHED_DEADLINE?? 
       - Wait for periodic timer version to see interaction 
    - Pointer use in shared memory??    [FIXED 5/3/22]
