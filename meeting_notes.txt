@@ -1,7 +1,16 @@
 
 
 Meeting Notes (5/5/22):
-   - 
+   - Look into how cgroup v2 supports threads https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html#threads
+   - cgroup global
+      -- Threaded -> server and all clients
+   1.) Leaderboard table for identites and roles 
+   2.) Admission control/ broker for client/server registration with cgroups created and associated and split/ merged accordingly 
+   Uses:
+      - elastic/mc/hierarchial CPU
+      - access control (i.e. files)
+      - Dedicated/ Shared Memory
+      Ex: Camera takes pictures and can change image (i.e. matrix) size accordingly
 
 Updates (5/4/22):
    - Fixed Dynamic Allocation bug, though omiited struct in favor of access to Pointer directly, using offset
