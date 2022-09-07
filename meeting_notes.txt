@@ -1,3 +1,15 @@
+9/2/77: Second Meeting:
+      - Innercomponent requests
+      - Fixed priority scheduling on MultiCore systems isn't great, so we will do that
+            - Kernel Mechanism 
+      - Utaliziation should be less than 100% on each processor. Right now, overall system 
+            is limited to 100%, but we want each processor to be limited to 100% 
+            so that overall you can have over 100% Utaliziation for multicore systems 
+      - Enforcment Mechanism for management of constraint utailiziation 
+      - Targeting RTNS Paper --> What systems doctorial research looks like 
+            - Chaning the way people think about how things work
+            
+
 9/2/22: First Fall22 Meeting:
       - Accounting system to keep track of usage of cgroup
             Server program joins client. Server will have residual work 
