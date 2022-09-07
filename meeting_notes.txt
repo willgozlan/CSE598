@@ -1,3 +1,22 @@
+9/2/22: First Fall22 Meeting:
+      - Accounting system to keep track of usage of cgroup
+            Server program joins client. Server will have residual work 
+            and we will see if statics persists or is reset. 
+            Basic test to start moving forward 
+      - Is there a way to enforce that server won't go join a cgroup with more bandwidth? 
+            - Stack abstraction: can only move into and out of specific cgroup
+      -  2 pools of threads that each have own capability and trust within them, 
+            what if they want to trust eachother
+      - Figure out how Linux actually works. Then, use this to see what naturally makes sense. 
+            Will likely need Kernel Module to account the open/ close of scope. 
+      - Project Title: Rational Enforcment Kernel Structure using cgroups 
+      - Design use of manifest constants similar to syscall table but for capbility numbers,
+            which are implemented as bit mask
+      - Linux vs sel4 --> Capibilies in Linux are binary (have it or not), while sel4 have more options
+            Could namespacing be used to add attributes of if you have the capibility 
+            Semantically bring sel4 to Linux. Syntactically C++
+      
+      - Comitte: Chris Gill, Ning Zhang, Silvia Zhang, possibly 
 
 
 Meeting Notes (5/5/22):
