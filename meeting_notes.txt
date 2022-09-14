@@ -1,4 +1,13 @@
-9/2/77: Second Meeting:
+9/14/22: Meeting 3:
+      - Linux Real time group scheduling isn't turned on by default 
+            - Limitations: Total utailiziation bound is 1 regardless of MultiCore System 
+            CPU Set and bandwidth constraint only for CFS not RealTime 
+      - idea: Add this to cgroups v2
+      - write the minimal code to levereverge cgroup v1 code for cgroup v2 usage. 
+      - Look at cgroup v1 code and port it to cgroup v2 code. 
+
+
+9/2/22: Second Meeting:
       - Innercomponent requests
       - Fixed priority scheduling on MultiCore systems isn't great, so we will do that
             - Kernel Mechanism 
