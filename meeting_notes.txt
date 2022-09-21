@@ -1,3 +1,15 @@
+9/21/22: Meeting 4 (virtual):
+      - /kernel/sched/rt.c - Checks for valid input
+      - Check each core.
+      - Start with fixed priority scheduling 
+      - Trace out how cpu.max goes 
+      - Look at /kernel/sched/fair.c to see how CFS implements bandwitch constraints (for knowledge only)
+      - To see:
+            - ft.c to see how existing constraint is implemented and enforced. 
+            - fair.c to see how bandwidth constraints are used
+            - deadline.c to see bandwidth constrains on a per core basis 
+      - Marion to send out email with summary 
+
 9/14/22: Meeting 3:
       - Linux Real time group scheduling isn't turned on by default 
             - Limitations: Total utailiziation bound is 1 regardless of MultiCore System 
