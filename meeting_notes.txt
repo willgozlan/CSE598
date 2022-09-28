@@ -1,3 +1,14 @@
+9/28/22: Meeting 5:
+      - Reservations in LITMUS are treated seperatley in cores 
+            - Not sure if its through system calls or VFS 
+      - Argument in paper- Linux Capabilities are primitive compared to SEL4. We make them comperable 
+      - We could do something more powerful than LITMUS by using cgroups 
+      - Cross compile LITMUS on LinuxLab's and make 2 images on SD card like we did in CSE422/522 
+            - Studio 1 from CSE522 
+      - Can claim meaningful prototype if get Linux cgroup implementation similar to LITMUS 
+      - RTSS (theory) or RTAS (applied) Conference Paper; MSOFT also an option. 
+      - 3-5 pages for Masters Project (probably already have); More for Thesis with ideas polished out more
+
 9/21/22: Meeting 4 (virtual):
       - /kernel/sched/rt.c - Checks for valid input
       - Check each core.
