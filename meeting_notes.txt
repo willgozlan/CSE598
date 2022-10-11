@@ -1,3 +1,57 @@
+10/7/22: Meeting 6:
+	- Fixed compile of LITMUS by using server instead of LinuxLabs
+	Weekly Notes:
+	- Got LITMUS installed! 
+	- SSH key authentication is oddly slow. 
+	- Large computations sometimes drop ssh connection, especially on SCHED_RR tasks. Possilby bandwidth issues? 
+		- Fixed by lowering matrix size. 
+	- Seemingly much slower to run in LITMUS
+	- Though much much faster with MultiCore than single core on LITMUS, compared to base. 
+
+9/28/22: Meeting 5:
+      - Reservations in LITMUS are treated seperatley in cores 
+            - Not sure if its through system calls or VFS 
+      - Argument in paper- Linux Capabilities are primitive compared to SEL4. We make them comperable 
+      - We could do something more powerful than LITMUS by using cgroups 
+      - Cross compile LITMUS on LinuxLab's and make 2 images on SD card like we did in CSE422/522 
+            - Studio 1 from CSE522 
+      - Can claim meaningful prototype if get Linux cgroup implementation similar to LITMUS 
+      - RTSS (theory) or RTAS (applied) Conference Paper; MSOFT also an option. 
+      - 3-5 pages for Masters Project (probably already have); More for Thesis with ideas polished out more
+
+9/21/22: Meeting 4 (virtual):
+      - /kernel/sched/rt.c - Checks for valid input
+      - Check each core.
+      - Start with fixed priority scheduling 
+      - Trace out how cpu.max goes 
+      - Look at /kernel/sched/fair.c to see how CFS implements bandwitch constraints (for knowledge only)
+      - To see:
+            - ft.c to see how existing constraint is implemented and enforced. 
+            - fair.c to see how bandwidth constraints are used
+            - deadline.c to see bandwidth constrains on a per core basis 
+      - Marion to send out email with summary 
+
+9/14/22: Meeting 3:
+      - Linux Real time group scheduling isn't turned on by default 
+            - Limitations: Total utailiziation bound is 1 regardless of MultiCore System 
+            CPU Set and bandwidth constraint only for CFS not RealTime 
+      - idea: Add this to cgroups v2
+      - write the minimal code to levereverge cgroup v1 code for cgroup v2 usage. 
+      - Look at cgroup v1 code and port it to cgroup v2 code. 
+
+
+9/2/22: Second Meeting:
+      - Innercomponent requests
+      - Fixed priority scheduling on MultiCore systems isn't great, so we will do that
+            - Kernel Mechanism 
+      - Utaliziation should be less than 100% on each processor. Right now, overall system 
+            is limited to 100%, but we want each processor to be limited to 100% 
+            so that overall you can have over 100% Utaliziation for multicore systems 
+      - Enforcment Mechanism for management of constraint utailiziation 
+      - Targeting RTNS Paper --> What systems doctorial research looks like 
+            - Chaning the way people think about how things work
+            
+
 9/2/22: First Fall22 Meeting:
       - Accounting system to keep track of usage of cgroup
             Server program joins client. Server will have residual work 
