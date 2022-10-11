@@ -1,3 +1,13 @@
+10/7/22: Meeting 6:
+	- Fixed compile of LITMUS by using server instead of LinuxLabs
+	Weekly Notes:
+	- Got LITMUS installed! 
+	- SSH key authentication is oddly slow. 
+	- Large computations sometimes drop ssh connection, especially on SCHED_RR tasks. Possilby bandwidth issues? 
+		- Fixed by lowering matrix size. 
+	- Seemingly much slower to run in LITMUS
+	- Though much much faster with MultiCore than single core on LITMUS, compared to base. 
+
 9/28/22: Meeting 5:
       - Reservations in LITMUS are treated seperatley in cores 
             - Not sure if its through system calls or VFS 
