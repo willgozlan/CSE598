@@ -8,6 +8,8 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <linux/sched.h>
+#include <sys/types.h>
+#include <sys/syscall.h>
 
 #include "return_values.h"
 
