@@ -1,3 +1,10 @@
+10/12/22: Meeting 7:
+	- Use resctl with period and budget and priority in LITMUS and pin to core as test. 
+		- See what constraints LITMUS applies and see how that helps up (looking at code for after)
+		- Use resctl to create reservation. Then use rt_launch to launch a binary on it. 
+	- Get new trace.dat files comparing PID on each of them
+	- Reinstall KernelShark to fix errors 
+
 10/7/22: Meeting 6:
 	- Fixed compile of LITMUS by using server instead of LinuxLabs
 	Weekly Notes:
@@ -7,6 +14,8 @@
 		- Fixed by lowering matrix size. 
 	- Seemingly much slower to run in LITMUS
 	- Though much much faster with MultiCore than single core on LITMUS, compared to base. 
+	- When I can leave for break (Vacation)?? 
+	- WiFi Doesn't connect automatically 
 
 9/28/22: Meeting 5:
       - Reservations in LITMUS are treated seperatley in cores 
