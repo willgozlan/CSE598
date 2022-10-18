@@ -3,6 +3,7 @@
 		- See what constraints LITMUS applies and see how that helps up (looking at code for after)
 		- Use resctl to create reservation. Then use rt_launch to launch a binary on it. 
 	- Get new trace.dat files comparing PID on each of them
+		Launches new thread, but same PID
 	- Reinstall KernelShark to fix errors 
 
 10/7/22: Meeting 6:
