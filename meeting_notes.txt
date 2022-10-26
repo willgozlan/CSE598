@@ -1,3 +1,17 @@
+10/26/22: Meeting 9:
+	- Finally got LITMUS working, but no WiFi support after (Jessie?)- How can we work around? 
+		- Plug in Ethernet 
+	- Fill out Committe Form
+		- Masters project;  Pivot to original plan;
+		Done- Ask Committe if availible. 
+	- Kernelshark issues - How to fix?
+		- Install and build from scratch. 
+		- In install guide, do steps 1, 3, then build with release version
+	- Design issue - when tracing all PIDs are the same because we create a new thread. Could trace with thread ID maybe but how? 
+		- Solution: Enable Sched_Switch view in Kernelshark (Screenshot at bottom of email). 
+	- Read Brandenburg Thesis Sections 3.2, 3.3.1.2, 3.3.6 to get idea for CPU Cgroups
+	- Email Cleopatra and advisors for committe: Prefered Nov 28-Dec 2.;  Dec. 5-8th if needed 
+
 10/19/22: Meeting 8:
 	- Check LITMUS Source code to see if they add new syscalls 
 	- Re clone and compile LITMUS for RaspberryPi and place it on new SD card. 
@@ -7,7 +21,7 @@
 			- Masters project;  Pivot to original plan;
 		- Kernelshark issues - How to fix?
 		- Design issue - when tracing all PIDs are the same because we create a new thread. Could trace with thread ID maybe but how? 
-	
+		
 
 10/12/22: Meeting 7:
 	- Use resctl with period and budget and priority in LITMUS and pin to core as test. 
