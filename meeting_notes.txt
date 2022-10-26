@@ -1,6 +1,13 @@
 10/19/22: Meeting 8:
 	- Check LITMUS Source code to see if they add new syscalls 
 	- Re clone and compile LITMUS for RaspberryPi and place it on new SD card. 
+	Progress: 
+		- Finally got LITMUS working, but no WiFi support after (Jessie?)- How can we work around? 
+		- Fill out Committe Form
+			- Masters project;  Pivot to original plan;
+		- Kernelshark issues - How to fix?
+		- Design issue - when tracing all PIDs are the same because we create a new thread. Could trace with thread ID maybe but how? 
+	
 
 10/12/22: Meeting 7:
 	- Use resctl with period and budget and priority in LITMUS and pin to core as test. 
