@@ -11,6 +11,8 @@
 		- Solution: Enable Sched_Switch view in Kernelshark (Screenshot at bottom of email). 
 	- Read Brandenburg Thesis Sections 3.2, 3.3.1.2, 3.3.6 to get idea for CPU Cgroups
 	- Email Cleopatra and advisors for committe: Prefered Nov 28-Dec 2.;  Dec. 5-8th if needed 
+	
+	Idea: Spawn a new process instead of a thread?
 
 10/19/22: Meeting 8:
 	- Check LITMUS Source code to see if they add new syscalls 
