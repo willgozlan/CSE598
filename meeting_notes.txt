@@ -10,7 +10,7 @@
 					Ideas? 
 		- Was Masters Committe form submitted to Cleopatra? For scheduling, show them WhenIsGood results. 
 	Notes:
-		- Redo LITMUS install using exact kernel version from guide 
+		- Redo LITMUS install using exact kernel version from guide (2017-07-05-raspbian-jessie is full version so use that)
 		- To use Oren Bell's workaround, must enable config_uprobe_events flag in compilation
 			- However, don't actually need to do this...
 		- Instead, print PID and TID in every thread in client-server programs. Then, in kernelshark, Plots->CPUS->Deselect all.  Plots->Tasks-> select 			programs client and server and look at those. 
