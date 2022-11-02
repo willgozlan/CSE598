@@ -1,3 +1,17 @@
+11/2/22: Meeting 10:
+	Pre-Meeting Notes:
+		- LITMUS bricks Wifi and ethernet support. I installed packages with `sudo apt-get -d build-dep <package_name>` then transfered them over via USB. 
+			Similarly with git installs. 
+			However, still Function Not Implemented Issue --> Thinking to get in touch with author? 
+			Discouraging after so much work :( 
+		- Fixed kernelshark issues without needing to build from source. Version kernelshark_2.6.1-0.1_armhf.deb is what works! 
+		- Sched_Switch View still doesn't show threadID, so I will likely need to add it to Kernelshark output with Oren Bell's workaround:
+					However, gives no permission even with sudo su root shell. Tried chmod but same issue.  
+					Ideas? 
+		- Was Masters Committe form submitted to Cleopatra? For scheduling, show them WhenIsGood results. 
+		
+			
+
 10/26/22: Meeting 9:
 	- Finally got LITMUS working, but no WiFi support after (Jessie?)- How can we work around? 
 		- Plug in Ethernet 
