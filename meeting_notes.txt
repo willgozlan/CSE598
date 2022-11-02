@@ -9,6 +9,13 @@
 					However, gives no permission even with sudo su root shell. Tried chmod but same issue.  
 					Ideas? 
 		- Was Masters Committe form submitted to Cleopatra? For scheduling, show them WhenIsGood results. 
+	Notes:
+		- Redo LITMUS install using exact kernel version from guide 
+		- To use Oren Bell's workaround, must enable config_uprobe_events flag in compilation
+			- However, don't actually need to do this...
+		- Instead, print PID and TID in every thread in client-server programs. Then, in kernelshark, Plots->CPUS->Deselect all.  Plots->Tasks-> select 			programs client and server and look at those. 
+		This will provide a sanity check. 
+		Tracing with kernelshark:  sudo trace-cmd record -e sched_switch ./program
 		
 			
 
