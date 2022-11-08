@@ -132,8 +132,8 @@ void *dense_mm(void *void_args)
 		return NULL;
 	}
 
-	printf("Multiplying matrices using PID %d...\n", getpid());
-	printf("Thread ID is %ld.\n", syscall(__NR_gettid));
+   printf("Multiplying matrices with PID: %d and TID: %ld\n", getpid(), syscall(__NR_gettid));
+
 
 #ifdef CACHE_OPTIMAL_MM
 	// Cache Optimal MM

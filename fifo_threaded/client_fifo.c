@@ -29,6 +29,9 @@ int main(int argc, char *argv[])
 
    int print_flag = FALSE;
 
+   printf("Client process running with PID: %d and TID: %ld\n", getpid(), syscall(__NR_gettid));
+
+
    if (argc != MIN_EXPECTED_ARGUMENTS && argc != MAX_EXPECTED_ARGUMENTS)
    {
       usage_message(argv[PROGRAM_NAME]);
@@ -114,6 +117,7 @@ int main(int argc, char *argv[])
       }
    }
 
+   // Set all matrix elements to a value
    value = 0.0;
    for (int row = 0; row < requested_matrix_size; ++row)
    {

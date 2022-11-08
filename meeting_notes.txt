@@ -1,3 +1,8 @@
+11/9/22: Meeting 11:
+      Pre-Meeting Notes:
+            - Use optimization flags in program?
+
+
 11/2/22: Meeting 10:
 	Pre-Meeting Notes:
 		- LITMUS bricks Wifi and ethernet support. I installed packages with `sudo apt-get -d build-dep <package_name>` then transfered them over via USB. 

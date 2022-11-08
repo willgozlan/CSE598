@@ -24,6 +24,8 @@ int main(int argc, char **argv)
    int single_core = 0;
    int scheduler_policy = SCHED_RR;
 
+   printf("Server process running with PID: %d and TID: %ld\n", getpid(), syscall(__NR_gettid));
+
    // Setup SIGNAL Handler for SIGINT, to cleanly exit
    struct sigaction sa;
    memset(&sa, 0, sizeof(sa));
@@ -187,6 +189,8 @@ void *hold_fifo_open(void *client_to_server_fifo)
    {
       return NULL;
    }
+
+   printf("Holding FIFO Open with PID: %d and TID: %ld\n", getpid(), syscall(__NR_gettid));
 
    while (1)
       ;
