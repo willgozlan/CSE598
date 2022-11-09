@@ -1,0 +1,67 @@
+pi@WilliamGozlanPi:~/CSE598/traces $ sudo trace-cmd record -e sched_switch ../fifo_threaded/server_fifo -f
+Server process running with PID: 1562 and TID: 1562
+Using SCHED_FIFO scheduling policy.
+Recieved matrix size 100 and priority 10
+Holding FIFO Open with PID: 1562 and TID: 1570
+Worker thread launched!
+Multiplying matrices with PID: 1562 and TID: 1571
+Recieved matrix size 200 and priority 10
+Worker thread launched!
+Multiplying matrices with PID: 1562 and TID: 1572
+Recieved matrix size 300 and priority 98
+Worker thread launched!
+Multiplying matrices with PID: 1562 and TID: 1573
+Multiplication done...Wrote back values to client shared memory!
+Recieved matrix size 300 and priority 50
+Worker thread launched!
+Multiplying matrices with PID: 1562 and TID: 1574
+Multiplication done...Wrote back values to client shared memory!
+Recieved matrix size 3 and priority 99
+Worker thread launched!
+Multiplying matrices with PID: 1562 and TID: 1575
+Multiplication done...Wrote back values to client shared memory!
+Multiplication done...Wrote back values to client shared memory!
+Multiplication done...Wrote back values to client shared memory!
+^CSHUTDOWN signal received
+Shutting down server
+CPU0 data recorded at offset=0x43c000
+    8192 bytes in size
+CPU1 data recorded at offset=0x43e000
+    4096 bytes in size
+CPU2 data recorded at offset=0x43f000
+    57344 bytes in size
+CPU3 data recorded at offset=0x44d000
+    24576 bytes in size
+
+
+
+
+
+
+
+
+
+
+
+
+
+pi@WilliamGozlanPi:~/CSE598/fifo_threaded $ sudo ./test_script.sh
+Client process running with PID: 1565 and TID: 1565
+/tmp/server_to_client_fifo_1565
+Client process running with PID: 1566 and TID: 1566
+/tmp/server_to_client_fifo_1566
+root@WilliamGozlanPi:/home/pi/CSE598/fifo_threaded# Client process running with PID: 1568 and TID: 1568
+/tmp/server_to_client_fifo_1568
+Sever completed computing matrix.
+Client process running with PID: 1567 and TID: 1567
+/tmp/server_to_client_fifo_1567
+Sever completed computing matrix.
+Client process running with PID: 1569 and TID: 1569
+/tmp/server_to_client_fifo_1569
+Sever completed computing matrix.
+15.00 18.00 21.00
+42.00 54.00 66.00
+69.00 90.00 111.00
+Sever completed computing matrix.
+Sever completed computing matrix.
+

@@ -1,0 +1,61 @@
+pi@WilliamGozlanPi:~/CSE598/traces $ sudo trace-cmd record -e sched_switch ../fifo_threaded/server_fifo -c -f
+Server process running with PID: 1426 and TID: 1426
+Using single core.
+Using SCHED_FIFO scheduling policy.
+Recieved matrix size 100 and priority 10
+Holding FIFO Open with PID: 1426 and TID: 1434
+Worker thread launched!
+Multiplying matrices with PID: 1426 and TID: 1435
+Recieved matrix size 200 and priority 10
+Worker thread launched!
+Multiplying matrices with PID: 1426 and TID: 1436
+Recieved matrix size 3 and priority 99
+Worker thread launched!
+Recieved matrix size 300 and priority 50
+Worker thread launched!
+Multiplying matrices with PID: 1426 and TID: 1438
+Recieved matrix size 300 and priority 98
+Worker thread launched!
+Multiplying matrices with PID: 1426 and TID: 1439
+Multiplication done...Wrote back values to client shared memory!
+Multiplication done...Wrote back values to client shared memory!
+Multiplying matrices with PID: 1426 and TID: 1437
+Multiplication done...Wrote back values to client shared memory!
+Multiplication done...Wrote back values to client shared memory!
+Multiplication done...Wrote back values to client shared memory!
+^CSHUTDOWN signal received
+Shutting down server
+CPU0 data recorded at offset=0x43c000
+    12288 bytes in size
+CPU1 data recorded at offset=0x43f000
+    8192 bytes in size
+CPU2 data recorded at offset=0x441000
+    53248 bytes in size
+CPU3 data recorded at offset=0x44e000
+    20480 bytes in size
+
+
+
+
+
+
+pi@WilliamGozlanPi:~/CSE598/fifo_threaded $ sudo ./test_script.sh
+Client process running with PID: 1429 and TID: 1429
+/tmp/server_to_client_fifo_1429
+Client process running with PID: 1430 and TID: 1430
+/tmp/server_to_client_fifo_1430
+Client process running with PID: 1431 and TID: 1431
+/tmp/server_to_client_fifo_1431
+Client process running with PID: 1433 and TID: 1433
+/tmp/server_to_client_fifo_1433
+Client process running with PID: 1432 and TID: 1432
+/tmp/server_to_client_fifo_1432
+root@WilliamGozlanPi:/home/pi/CSE598/fifo_threaded# Sever completed computing matrix.
+Sever completed computing matrix.
+Sever completed computing matrix.
+0.00 1.00 2.00
+3.00 4.00 5.00
+6.00 7.00 8.00
+Sever completed computing matrix.
+Sever completed computing matrix.
+
