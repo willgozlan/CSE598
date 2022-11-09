@@ -1,10 +1,21 @@
 11/9/22: Meeting 11:
       Pre-Meeting Notes:
       	    - LITMUS still not working but emailing the contact
-            - Use optimization flags in program?
+            - Use optimization flags in program?  -o0 because interested in determinism than speed across platform 
 	    - In Single Core RR should fifo open be pinned to same core as others, or seperate?
 	    - Plan for rest of semester and defense?
-
+	    	Talk about all the things we worked with
+		Vision and how you did it
+		Results you were able to obtain 
+		Keep as Masters Project --> Experience Report 
+		Idea: Enforcing limits on behavious work on microkerle (SEL4 and SPEC) but nothing on Linux. Propose to modify cgroups in Linux
+		and explain how this would work. and here is how far we got with that. 
+		LITMUS version in the future as well! 
+		
+		Do a writeup parallel in presentation 
+		
+		McKelvey 1030 is good to be big enough if Public. 
+		
 	    
 	    Interesting as fifo isn't held open until after client runs. Why? --> Reason is because the open call of that FIFO on the server side is blocked until client uses it! 
 	    
