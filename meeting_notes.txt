@@ -1,7 +1,10 @@
 11/9/22: Meeting 11:
       Pre-Meeting Notes:
+      	    - LITMUS still not working but emailing the contact
             - Use optimization flags in program?
-	    
+	    - In Single Core RR should fifo open be pinned to same core as others, or seperate?
+	    - Plan for rest of semester and defense?
+
 	    
 	    Interesting as fifo isn't held open until after client runs. Why? --> Reason is because the open call of that FIFO on the server side is blocked until client uses it! 
 	    
