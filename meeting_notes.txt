@@ -1,6 +1,41 @@
 11/9/22: Meeting 11:
       Pre-Meeting Notes:
-            - Use optimization flags in program?
+      	    - LITMUS still not working but emailing the contact
+            - Use optimization flags in program?  -o0 because interested in determinism than speed across platform 
+	    - In Single Core RR should fifo open be pinned to same core as others, or seperate?
+	    - Plan for rest of semester and defense?
+	    	Talk about all the things we worked with
+		Vision and how you did it
+		Results you were able to obtain 
+		Keep as Masters Project --> Experience Report 
+		Idea: Enforcing limits on behavious work on microkerle (SEL4 and SPEC) but nothing on Linux. Propose to modify cgroups in Linux
+		and explain how this would work. and here is how far we got with that. 
+		LITMUS version in the future as well! 
+		
+		Do a writeup parallel in presentation 
+		
+		McKelvey 1030 is good to be big enough if Public. 
+		
+	    
+	    Interesting as fifo isn't held open until after client runs. Why? --> Reason is because the open call of that FIFO on the server side is blocked until client uses it! 
+	    
+	    Single Trace Output:
+	    pi@WilliamGozlanPi:~/CSE598/fifo_threaded $ sudo trace-cmd record -e sched_switch ./server_fifo
+			Server process running with PID: 1256 and TID: 1256
+			Recieved matrix size 10 and priority 10
+			Holding FIFO Open with PID: 1256 and TID: 1259
+			Worker thread launched!
+			Multiplying matrices with PID: 1256 and TID: 1260
+			Multiplication done...Wrote back values to client shared memory!
+			^CSHUTDOWN signal received
+			Shutting down server
+			
+	    pi@WilliamGozlanPi:~/CSE598/fifo_threaded $ sudo ./client_fifo 10 10
+			Client process running with PID: 1258 and TID: 1258
+			/tmp/server_to_client_fifo_1258
+			Sever completed computing matrix.
+
+
 
 
 11/2/22: Meeting 10:
