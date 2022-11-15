@@ -2,8 +2,8 @@
 CC = gcc
 
 # compiler flags, for server and client:
-CFLAGS_SERVER  = -Wall -lrt -pthread -std=c99
-CFLAGS_CLIENT  = -Wall -lrt -std=c99
+CFLAGS_SERVER  = -Wall -lrt -pthread 
+CFLAGS_CLIENT  = -Wall -lrt 
 
 # the build target executable:
 TARGET = server_fifo client_fifo
