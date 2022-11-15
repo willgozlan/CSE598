@@ -1,0 +1,56 @@
+pi@WilliamGozlanPi2:~/CSE598/fifo_threaded $ sudo trace-cmd record -e sched_switch ./server_fifo -c -f
+Server process running with PID: 5427 and TID: 5427
+Using single core.
+Using SCHED_FIFO scheduling policy.
+Recieved matrix size 200 and priority 10
+Holding FIFO Open with PID: 5427 and TID: 5438
+Worker thread launched!
+Recieved matrix size 1886221359 and priority 1919251247
+open: No such file or directory
+Cannot open client... skipping
+Multiplying matrices with PID: 5427 and TID: 5439
+Recieved matrix size 100 and priority 10
+Worker thread launched!
+Multiplying matrices with PID: 5427 and TID: 5440
+Recieved matrix size 300 and priority 50
+Worker thread launched!
+Multiplying matrices with PID: 5427 and TID: 5441
+Recieved matrix size 300 and priority 98
+Worker thread launched!
+Multiplying matrices with PID: 5427 and TID: 5442
+Multiplication done...Wrote back values to client shared memory!
+Multiplication done...Wrote back values to client shared memory!
+Multiplication done...Wrote back values to client shared memory!
+Multiplication done...Wrote back values to client shared memory!
+
+SHUTDOWN signal received
+Shutting down server
+^CCPU0 data recorded at offset=0x88000
+    1748 bytes in size (16384 uncompressed)
+CPU1 data recorded at offset=0x89000
+    1208 bytes in size (8192 uncompressed)
+CPU2 data recorded at offset=0x8a000
+    573 bytes in size (4096 uncompressed)
+CPU3 data recorded at offset=0x8b000
+    3306 bytes in size (32768 uncompressed)
+
+
+
+
+
+pi@WilliamGozlanPi2:~/CSE598/fifo_threaded $ sudo ./test_script.sh
+Client process running with PID: 5433 and TID: 5433
+/tmp/server_to_client_fifo_5433
+Client process running with PID: 5434 and TID: 5434
+/tmp/server_to_client_fifo_5434
+Client process running with PID: 5435 and TID: 5435
+/tmp/server_to_client_fifo_5435
+Client process running with PID: 5437 and TID: 5437
+/tmp/server_to_client_fifo_5437
+root@WilliamGozlanPi2:/home/pi/CSE598/fifo_threaded# Client process running with               PID: 5436 and TID: 5436
+/tmp/server_to_client_fifo_5436
+Sever completed computing matrix.
+Sever completed computing matrix.
+Sever completed computing matrix.
+Sever completed computing matrix.
+
