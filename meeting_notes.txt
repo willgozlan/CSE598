@@ -1,3 +1,7 @@
+11/16/22: Meeting 12:
+      Pre-Meeting Notes:
+            - RaspberryPi2 has compilation issues that weren't a problem previously, but easiy fixed  
+
 11/9/22: Meeting 11:
       Pre-Meeting Notes:
       	    - LITMUS still not working but emailing the contact
