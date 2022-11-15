@@ -1,56 +1,82 @@
 pi@WilliamGozlanPi2:~/CSE598/fifo_threaded $ sudo trace-cmd record -e sched_switch ./server_fifo -c -f
-Server process running with PID: 5427 and TID: 5427
+Server process running with PID: 8881 and TID: 8881
 Using single core.
 Using SCHED_FIFO scheduling policy.
-Recieved matrix size 200 and priority 10
-Holding FIFO Open with PID: 5427 and TID: 5438
-Worker thread launched!
-Recieved matrix size 1886221359 and priority 1919251247
-open: No such file or directory
-Cannot open client... skipping
-Multiplying matrices with PID: 5427 and TID: 5439
 Recieved matrix size 100 and priority 10
+Holding FIFO Open with PID: 8881 and TID: 8892
 Worker thread launched!
-Multiplying matrices with PID: 5427 and TID: 5440
+Multiplying matrices with PID: 8881 and TID: 8893
+Recieved matrix size 3 and priority 99
+Worker thread launched!
+Multiplying matrices with PID: 8881 and TID: 8894
+Multiplication done...Wrote back values to client shared memory!
 Recieved matrix size 300 and priority 50
 Worker thread launched!
-Multiplying matrices with PID: 5427 and TID: 5441
+Multiplying matrices with PID: 8881 and TID: 8895
 Recieved matrix size 300 and priority 98
 Worker thread launched!
-Multiplying matrices with PID: 5427 and TID: 5442
+Multiplying matrices with PID: 8881 and TID: 8896
+Recieved matrix size 200 and priority 10
+Worker thread launched!
 Multiplication done...Wrote back values to client shared memory!
 Multiplication done...Wrote back values to client shared memory!
+Multiplying matrices with PID: 8881 and TID: 8897
 Multiplication done...Wrote back values to client shared memory!
 Multiplication done...Wrote back values to client shared memory!
 
-SHUTDOWN signal received
+
+
+
+
+
+
+
+^CSHUTDOWN signal received
 Shutting down server
-^CCPU0 data recorded at offset=0x88000
-    1748 bytes in size (16384 uncompressed)
-CPU1 data recorded at offset=0x89000
-    1208 bytes in size (8192 uncompressed)
-CPU2 data recorded at offset=0x8a000
-    573 bytes in size (4096 uncompressed)
-CPU3 data recorded at offset=0x8b000
-    3306 bytes in size (32768 uncompressed)
+CPU0 data recorded at offset=0x221000
+    12288 bytes in size
+CPU1 data recorded at offset=0x224000
+    4096 bytes in size
+CPU2 data recorded at offset=0x225000
+    12288 bytes in size
+CPU3 data recorded at offset=0x228000
+    61440 bytes in size
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 
 pi@WilliamGozlanPi2:~/CSE598/fifo_threaded $ sudo ./test_script.sh
-Client process running with PID: 5433 and TID: 5433
-/tmp/server_to_client_fifo_5433
-Client process running with PID: 5434 and TID: 5434
-/tmp/server_to_client_fifo_5434
-Client process running with PID: 5435 and TID: 5435
-/tmp/server_to_client_fifo_5435
-Client process running with PID: 5437 and TID: 5437
-/tmp/server_to_client_fifo_5437
-root@WilliamGozlanPi2:/home/pi/CSE598/fifo_threaded# Client process running with               PID: 5436 and TID: 5436
-/tmp/server_to_client_fifo_5436
+Client process running with PID: 8887 and TID: 8887
+/tmp/server_to_client_fifo_8887
+Client process running with PID: 8888 and TID: 8888
+/tmp/server_to_client_fifo_8888
+Client process running with PID: 8890 and TID: 8890
+/tmp/server_to_client_fifo_8890
+Client process running with PID: 8889 and TID: 8889
+/tmp/server_to_client_fifo_8889
+Client process running with PID: 8891 and TID: 8891
+/tmp/server_to_client_fifo_8891
+Sever completed computing matrix.
+15.00 18.00 21.00
+42.00 54.00 66.00
+69.00 90.00 111.00
+root@WilliamGozlanPi2:/home/pi/CSE598/fifo_threaded# Sever completed computing matrix.
 Sever completed computing matrix.
 Sever completed computing matrix.
 Sever completed computing matrix.
-Sever completed computing matrix.
+^C
 
