@@ -167,9 +167,9 @@ void *dense_mm(void *void_args)
 #endif
 
 #ifdef PRINT_MATRIX_SERVER
-	for (int row = 0; row < matrix_size; ++row)
+	for (row = 0; row < matrix_size; ++row)
 	{
-		for (int col = 0; col < matrix_size; ++col)
+		for (col = 0; col < matrix_size; ++col)
 		{
 			printf("%.2lf ", C[row * matrix_size + col]);
 		}
@@ -177,9 +177,9 @@ void *dense_mm(void *void_args)
 	}
 #endif
 
-	for (int row = 0; row < matrix_size; ++row)
+	for (row = 0; row < matrix_size; ++row)
 	{
-		for (int col = 0; col < matrix_size; ++col)
+		for (col = 0; col < matrix_size; ++col)
 		{
 			shm_mapped[row * matrix_size + col] = C[row * matrix_size + col];
 		}
