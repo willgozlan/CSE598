@@ -2,10 +2,23 @@
       Pre-Meeting Notes:
             - LITMUS worked on RaspberryPi2, after talking with Filip Marković 
             - Built trace-cmd and kernelshark with its dependancies okay (522 project helpful)
-            - RaspberryPi2 has compilation issues that weren't a problem previously, but ended up just compiling on RB3B+. Is that okay?
+            - RaspberryPi2 has compilation issues that weren't a problem previously, but ended up just compiling on RB3B+. Is that okay? Both are armvl so ok. 
             - Look at LITMUS vs Default Kernel traces. Show screenshots
                   - Code explicitaly sets scheduler. So should it be different?
                   - Should I modify it to use a LITMUS scheduler and how? No documentation on seting scheduler to a LITMUS one (I think)
+                        Question: Does LITMUS allow for constrained utailiziation
+                        DIdn't end up getting to cgroup stuff, but got foundation for vision --> Good for project wrap up
+                        - Reservations on single core then again on multiple core. 
+
+                        Default scheduler is CFS scheduler. 
+                        Use budget of 50-60ms out of 100ms per core. 
+                        Litmus should migrate reservation to core. Test this in Kernelshark. 
+                        Do the LITMUS semantics cover what we discuss, or are the single core? 
+
+
+                        Gaps in trace are due to global limit. Check this with timing.
+
+
                   - Perhaps we can create a reservation and trace that in todays meeting, and see how that does. 
             - cgroup branch was previous. cgroups are process specific, not thread specific. Workaround? 
             - Cleo wants a summary if I make it public. Discuss one. 
