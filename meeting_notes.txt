@@ -1,6 +1,14 @@
 11/16/22: Meeting 12:
       Pre-Meeting Notes:
-            - RaspberryPi2 has compilation issues that weren't a problem previously, but easiy fixed  
+            - LITMUS worked on RaspberryPi2, after talking with Filip Marković 
+            - Built trace-cmd and kernelshark with its dependancies okay (522 project helpful)
+            - RaspberryPi2 has compilation issues that weren't a problem previously, but ended up just compiling on RB3B+. Is that okay?
+            - Look at LITMUS vs Default Kernel traces. Show screenshots
+                  - Code explicitaly sets scheduler. So should it be different?
+                  - Should I modify it to use a LITMUS scheduler and how? No documentation on seting scheduler to a LITMUS one (I think)
+                  - Perhaps we can create a reservation and trace that in todays meeting, and see how that does. 
+            - cgroup branch was previous. cgroups are process specific, not thread specific. Workaround? 
+            - Cleo wants a summary if I make it public. Discuss one. 
 
 11/9/22: Meeting 11:
       Pre-Meeting Notes:
