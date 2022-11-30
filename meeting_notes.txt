@@ -1,3 +1,16 @@
+11/30/22: Meeting 13:
+	Meeting Notes:
+		- Client needs additional parameter for reservation, and server joins that reservation with system(rt_launch...). 
+		- Fixed rt_launch (see screenshot/ or below for usage):
+			setsched P-RES
+			resctl -n 123 -t polling-sporadic -c 0 -b 10 -p 100
+			rt_launch -p 0 -r 123 -- ./client_fifo 10 10
+		
+		- Polling-Sporatic vs Polling-Periodic ... See difference?			
+		- If not feasible to finish this, explain in write-up
+		- LITMUS manual is incorrect --> rt_launch doesnt take budget again when using reservation (because it already has it). 
+		- 3-5 pages for project usually. 
+
 11/16/22: Meeting 12:
       Pre-Meeting Notes:
             - LITMUS worked on RaspberryPi2, after talking with Filip Marković 
